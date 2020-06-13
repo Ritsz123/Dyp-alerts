@@ -1,4 +1,5 @@
-import 'package:dypalerts/screens/HomeScreen.dart';
+import 'package:dypalerts/constants/constants.dart';
+import 'package:dypalerts/screens/home_screen/HomeScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -42,34 +43,35 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipOval(
-                        child: Image(
-                          image: AssetImage('assets/images/back.jpg'),
-                        ),
+              Container(
+                height: screenHeight(context: context, divideBy: 1.5),
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth(context: context, divideBy: 10)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                      child: Image(
+                        image: AssetImage('assets/images/logo.png'),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'DYP Alerts',
-                        style: TextStyle(
-                          fontSize: 35.0,
-                        ),
-                      )
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.orange[400],
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(270),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'DYP Alerts',
+                      style: TextStyle(
+                        fontSize: screenHeight(context: context, divideBy: 20),
+                      ),
+                    )
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.orange[400],
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(
+                        screenHeight(context: context, divideBy: 2.5)),
                   ),
                 ),
               ),
@@ -77,7 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth(context: context, divideBy: 10)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //login with google button
                     SignInButton(
                       Buttons.Google,
-                      text: 'Login with Google',
+                      shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
                       onPressed: () {
                         _processLogin();
                       },
@@ -95,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SignInButton(
                       Buttons.Facebook,
-                      text: 'Login with Facebook',
+                      shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
                       onPressed: () {
                         _processLogin();
                       },

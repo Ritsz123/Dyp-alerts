@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "216153160685",
+    "firebase_url": "https://dypalerts-98208.firebaseio.com",
+    "project_id": "dypalerts-98208",
+    "storage_bucket": "dypalerts-98208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216153160685:android:8595dc20adc3c3eced05e4",
+        "android_client_info": {
+          "package_name": "com.example.dypalerts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "216153160685-3phh4qo2u9gh4cr6tedsllknaupu26pk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dypalerts",
+            "certificate_hash": "44df14a63f55333c0330f443c11683a61a614847"
+          }
+        },
+        {
+          "client_id": "216153160685-7r5o89ddqjl5pt8v0a0f9vt52meih1e8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASSkRf-X7fHfvcxJA788TZS1ZgxsRF2kM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "216153160685-7r5o89ddqjl5pt8v0a0f9vt52meih1e8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

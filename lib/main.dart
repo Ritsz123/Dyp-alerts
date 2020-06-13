@@ -1,4 +1,5 @@
-import 'file:///D:/Work/dyp%20project/github/Dyp-alerts/lib/screens/home_screen/HomeScreen.dart';
+import 'package:dypalerts/screens/home_screen/HomeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen/LoginScreen.dart';
 
@@ -12,11 +13,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dyp Alerts',
-      initialRoute: LoginScreen.id,
-      routes: {
-        '/': (context) => LoginScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+      home: MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return CircularProgressIndicator();
+        if (!snapshot.hasData || snapshot.data == null) return LoginScreen();
+        return HomeScreen();
       },
     );
   }

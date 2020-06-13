@@ -1,5 +1,6 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/home_screen/HomeScreen.dart';
+import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -89,8 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     SignInButton(
                       Buttons.Google,
                       shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
-                      onPressed: () {
-                        _processLogin();
+                      onPressed: () async {
+                        bool res = await AuthProvider().signInWithGoogle();
+                        if (!res) {
+                          print('Login Failed');
+                        }
                       },
                     ),
                     SizedBox(

@@ -1,7 +1,6 @@
 import 'package:dypalerts/screens/home_screen/drawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static final id = 'homeScreen';

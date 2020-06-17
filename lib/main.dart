@@ -25,7 +25,11 @@ class MainScreen extends StatelessWidget {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
-          return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+            ),
+          );
         if (!snapshot.hasData || snapshot.data == null) return LoginScreen();
         return HomeScreen();
       },

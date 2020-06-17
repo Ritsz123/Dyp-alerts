@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: screenHeight(context: context, divideBy: 16),
               ),
               Container(
                 padding: EdgeInsets.symmetric(
@@ -87,25 +87,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     //login with google button
-                    SignInButton(
-                      Buttons.Google,
-                      shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
-                      onPressed: () async {
-                        bool res = await AuthProvider().signInWithGoogle();
-                        if (!res) {
-                          print('Login Failed');
-                        }
-                      },
+                    SizedBox(
+                      height: screenHeight(context: context, divideBy: 18),
+                      child: SignInButton(
+                        Buttons.Google,
+                        shape:
+                            RoundedRectangleBorder(side: BorderSide(width: 1)),
+                        onPressed: () async {
+                          _toggleLoading();
+                          bool res = await AuthProvider().signInWithGoogle();
+                          if (!res) {
+                            print('Login Failed');
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
-                    SignInButton(
-                      Buttons.Facebook,
-                      shape: RoundedRectangleBorder(side: BorderSide(width: 1)),
-                      onPressed: () {
-                        _processLogin();
-                      },
+                    SizedBox(
+                      height: screenHeight(context: context, divideBy: 18),
+                      child: SignInButton(
+                        Buttons.Facebook,
+                        shape:
+                            RoundedRectangleBorder(side: BorderSide(width: 1)),
+                        onPressed: () {
+                          _processLogin();
+                        },
+                      ),
                     ),
                   ],
                 ),

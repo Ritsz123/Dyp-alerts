@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dypalerts/screens/home_screen/drawer.dart';
 import 'package:dypalerts/screens/home_screen/drawerOptionNumberProvider.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,11 +24,23 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: CustomAppDrawer(),
         body: SafeArea(
           child: Container(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) => Container(
-                  //TODO: build the notice layout
+            child: StreamBuilder(
+              stream: Firestore.instance.collection('notices').snapshots(),
+              builder: (context, snapshot) {
+                //TODO: Implement Loading widget
+                if (!snapshot.hasData) return Text('Loading...');
+                return ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) => Container(
+                    //TODO: build the notice layout
+                    child: Column(
+                      children: [
+                        Text(snapshot.data.documents[index]['title']),
+                      ],
+                    ),
                   ),
+                );
+              },
             ),
           ),
         ),

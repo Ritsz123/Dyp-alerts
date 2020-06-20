@@ -1,3 +1,4 @@
+import 'package:dypalerts/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -10,7 +11,6 @@ class AuthProvider {
     if (googleAccount == null) return false;
     final GoogleSignInAuthentication googleAuth =
         await googleAccount.authentication;
-
     AuthCredential credential = GoogleAuthProvider.getCredential(
         idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
     try {
@@ -18,8 +18,13 @@ class AuthProvider {
 
       if (result.user == null) {
         return false;
-      } else
+      } else {
+        DatabaseService(uid: result.user.uid).updateUser(
+            result.user.displayName,
+            result.user.photoUrl,
+            result.user.email); //for database //TODO:Update this
         return true;
+      }
     } catch (e) {
       return false;
     }
@@ -27,6 +32,7 @@ class AuthProvider {
 
   Future<void> signOutGoogle() async {
     try {
+      await _googleSignIn.signOut();
       await _auth.signOut();
     } catch (e) {
       print(e);

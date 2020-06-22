@@ -1,5 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/home_screen/HomeScreen.dart';
+import 'package:dypalerts/screens/home_screen/homeScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

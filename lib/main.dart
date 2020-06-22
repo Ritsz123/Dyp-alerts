@@ -1,7 +1,7 @@
-import 'package:dypalerts/screens/home_screen/HomeScreen.dart';
+import 'package:dypalerts/screens/home_screen/homeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'screens/login_screen/LoginScreen.dart';
+import 'screens/login_screen/loginScreen.dart';
 
 void main() {
   runApp(MyApp());

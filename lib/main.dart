@@ -1,3 +1,4 @@
+import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/home_screen/homeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dyp Alerts',
+      theme: ThemeData.light(),
       home: MainScreen(),
     );
   }
@@ -26,9 +28,7 @@ class MainScreen extends StatelessWidget {
       builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
-            ),
+            child: loadingIndicator,
           );
         if (!snapshot.hasData || snapshot.data == null) return LoginScreen();
         return HomeScreen();

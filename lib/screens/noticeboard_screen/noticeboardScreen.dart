@@ -1,3 +1,4 @@
+import 'package:dypalerts/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,7 +15,7 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
         stream: Firestore.instance.collection('notices').snapshots(),
         builder: (context, snapshot) {
           //TODO: Implement Loading widget
-          if (!snapshot.hasData) return Text('Loading...');
+          if (!snapshot.hasData) return loadingIndicator;
           return ListView.builder(
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) => Container(

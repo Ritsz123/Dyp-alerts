@@ -15,14 +15,12 @@ class AuthProvider {
         idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
     try {
       AuthResult result = await _auth.signInWithCredential(credential);
-
-      if (result.user == null) {
+      FirebaseUser user = result.user;
+      if (user == null) {
         return false;
       } else {
-        DatabaseService(uid: result.user.uid).updateUser(
-            result.user.displayName,
-            result.user.photoUrl,
-            result.user.email); //for database //TODO:Update this
+        DatabaseService(uid: user.uid).updateUser(user.displayName,
+            user.photoUrl, user.email); //for database //TODO:Update this
         return true;
       }
     } catch (e) {

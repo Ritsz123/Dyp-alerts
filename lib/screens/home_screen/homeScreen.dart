@@ -1,12 +1,16 @@
+import 'package:dypalerts/model/popup_btn_options.dart';
 import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
+import 'package:dypalerts/screens/home_screen/appBar.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';
 import 'package:dypalerts/screens/profileScreen.dart';
+import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static final id = 'homeScreen';
+  final AuthProvider _authProvider = AuthProvider();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -35,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ),
   ];
 
+  //for changing screens using bottom navigator
   final List<Widget> _children = [
     NoticeBoardScreen(),
     DiscussScreen(),
@@ -50,9 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dyp Alerts'),
-      ),
+      appBar: myAppBar,
 //        drawer: CustomAppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 25,

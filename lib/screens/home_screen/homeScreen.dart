@@ -1,15 +1,14 @@
+import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
 import 'package:dypalerts/screens/home_screen/appBar.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';
 import 'package:dypalerts/screens/profileScreen.dart';
-import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   static final id = 'homeScreen';
-  final AuthProvider _authProvider = AuthProvider();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -55,12 +54,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppBar,
-//        drawer: CustomAppDrawer(),
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 25,
+        backgroundColor: Colors.lightBlue,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
+        iconSize: screenWidth(context: context, divideBy: 15),
         currentIndex: _currentIndex,
         elevation: 10,
-        selectedIconTheme: IconThemeData(size: 30),
+        selectedIconTheme:
+            IconThemeData(size: screenWidth(context: context, divideBy: 13.5)),
         items: _tabList,
         onTap: (index) => _onTabTapped(index),
       ),

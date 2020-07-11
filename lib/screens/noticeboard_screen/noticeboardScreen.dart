@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 
 class NoticeBoardScreen extends StatefulWidget {
   @override
@@ -14,6 +16,11 @@ class NoticeBoardScreen extends StatefulWidget {
 
 class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
   bool back = false;
+
+  void openSingleNotice(int index) {
+    print("Notice at index $index");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,40 +35,44 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) => FlatButton(
               onPressed: () {
-                //
-                print('open notice here');
+                openSingleNotice(index);
               },
-              child: GFListTile(
-                padding: EdgeInsets.all(0),
-                avatar: GFAvatar(
-                  backgroundColor: Colors.lightGreenAccent,
-                ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        '${_list[index].title}',
-                        style: kNoticeTitle,
+              child: Card(
+                elevation: 5,
+                child: GFListTile(
+                  padding: EdgeInsets.all(0),
+                  avatar: GFAvatar(
+                    backgroundColor: Colors.lightGreenAccent,
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          '${_list[index].title}',
+                          style: kNoticeTitle,
+                        ),
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          _list[index].time[0].value, //0 for hours & 1 for date
-                          style: kNoticeTime,
-                        ),
-                        Text(
-                          _list[index].time[1].value,
-                          style: kNoticeTime,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                subTitle: Text(
-                  '- ${_list[index].author}',
-                  style: kNoticeAuthor,
+                      Column(
+                        children: [
+                          Text(
+                            _list[index]
+                                .time[0]
+                                .value, //0 for hours & 1 for date
+                            style: kNoticeTime,
+                          ),
+                          Text(
+                            _list[index].time[1].value,
+                            style: kNoticeTime,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  subTitle: Text(
+                    '- ${_list[index].author}',
+                    style: kNoticeAuthor,
+                  ),
                 ),
               ),
             ),

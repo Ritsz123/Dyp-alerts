@@ -13,3 +13,7 @@ double screenHeight({@required context, @required divideBy}) {
 const loadingIndicator = SpinKitDualRing(
   color: Colors.blue,
 );
+
+const kNoticeTitle = TextStyle(fontSize: 20);
+const kNoticeAuthor = TextStyle(fontSize: 14);
+const kNoticeTime = TextStyle(fontSize: 14);

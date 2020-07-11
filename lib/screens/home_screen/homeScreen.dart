@@ -1,4 +1,3 @@
-import 'package:dypalerts/model/popup_btn_options.dart';
 import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
 import 'package:dypalerts/screens/home_screen/appBar.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';

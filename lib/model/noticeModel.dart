@@ -3,5 +3,5 @@ class NoticeModel {
   final String title;
   final String description;
   final String author;
-  final String time;
+  final List<MapEntry> time;
 }

@@ -19,8 +19,12 @@ class AuthProvider {
       if (user == null) {
         return false;
       } else {
-        DatabaseService(uid: user.uid).updateUser(user.displayName,
-            user.photoUrl, user.email); //for database //TODO:Update this
+        DatabaseService().updateUser(
+          user.uid,
+          user.displayName,
+          user.email,
+          user.phoneNumber,
+        ); //for database //TODO:Update this
         return true;
       }
     } catch (e) {

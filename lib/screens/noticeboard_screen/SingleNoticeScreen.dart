@@ -14,8 +14,16 @@ class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
   Widget build(BuildContext context) {
     NoticeModel currentNotice = widget.noticeModel;
     return Scaffold(
+      appBar: GFAppBar(),
       body: GFCard(
+        margin: EdgeInsets.all(10),
         title: getBuildNoticeTile(currentNotice),
+        content: Text(
+          currentNotice.description,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
       ),
     );
   }

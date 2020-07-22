@@ -16,14 +16,16 @@ class DatabaseService {
 
   List<NoticeModel> getNotices(AsyncSnapshot snapshot) {
     List<NoticeModel> noticeList = [];
-    String title, author, timeAddedHours, timeAddedDate;
+    String title, author, timeAddedHours, timeAddedDate, description;
     for (var snap in snapshot.data.documents) {
       title = snap['title'];
       author = snap['author'];
+      description = snap['desc'];
       DateTime date = DateTime.parse(snap['timeAdded'].toDate().toString());
       timeAddedHours = DateFormat('hh:mm a,').format(date);
       timeAddedDate = DateFormat('dd MMM yyyy').format(date);
       noticeList.add(NoticeModel(
+        description: description,
         author: author,
         title: title,
         time: [

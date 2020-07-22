@@ -1,8 +1,6 @@
-import 'package:dypalerts/model/noticeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:getwidget/getwidget.dart';
 
 double screenWidth({@required context, @required divideBy}) {
   return MediaQuery.of(context).size.width / divideBy;
@@ -19,3 +17,6 @@ const loadingIndicator = SpinKitDualRing(
 const kNoticeTitle = TextStyle(fontSize: 20);
 const kNoticeAuthor = TextStyle(fontSize: 14);
 const kNoticeTime = TextStyle(fontSize: 14);
+
+const kProfileDescTitle = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
+const kProfileDescInfo = TextStyle(fontSize: 20, color: Colors.blueGrey);

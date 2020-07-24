@@ -1,5 +1,7 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/home_screen/dashCard.dart';
+import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';
+import 'package:dypalerts/screens/profileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +21,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 alignment: Alignment.topCenter,
+                fit: BoxFit.cover,
                 image: AssetImage('assets/images/bg.png'),
               ),
             ),
@@ -69,18 +72,37 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                         DashCard(
                           label: 'NoticeBoard',
                           iconData: FontAwesomeIcons.clipboard,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NoticeBoardScreen()));
+                          },
                         ),
                         DashCard(
                           label: 'Syllabus',
                           iconData: FontAwesomeIcons.newspaper,
+                          onTap: () {
+                            //TODO:add functionality for syllabus
+                          },
                         ),
                         DashCard(
                           label: 'Discussions',
                           iconData: FontAwesomeIcons.rocketchat,
+                          onTap: () {
+                            //TODO:add functionality for Discussions
+                          },
                         ),
                         DashCard(
                           label: 'Profile',
                           iconData: FontAwesomeIcons.user,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfileScreen()));
+                            //TODO:add functionality for profile
+                          },
                         ),
                       ],
                     ),

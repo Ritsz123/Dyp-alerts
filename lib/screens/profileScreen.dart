@@ -6,72 +6,80 @@ import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Scaffold(
+      body: Stack(
         children: [
-          Container(
-            padding: EdgeInsets.all(35),
-            child: Column(
-              children: [
-                Card(
-                  child: CircleAvatar(
-                    radius: screenHeight(context: context, divideBy: 13),
-                    backgroundColor: Colors.green,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                padding: EdgeInsets.all(35),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/bg.png'),
                   ),
-                  elevation: 10,
-                  shape: CircleBorder(),
-                  clipBehavior: Clip.antiAlias,
+//                  gradient: LinearGradient(
+//                    colors: [Color(0xfff12711), Color(0xfff5af19)],
+//                    stops: [0.0, 0.7],
+//                  ),
                 ),
-                Text(
-                  'AppSignInUser',
-                  style: TextStyle(fontSize: 35),
+                child: Column(
+                  children: [
+                    Card(
+                      child: CircleAvatar(
+                        radius: screenHeight(context: context, divideBy: 13),
+                        backgroundColor: Colors.yellowAccent,
+                        //TODO: change color to background image
+                      ),
+                      elevation: 10,
+                      shape: CircleBorder(),
+                      clipBehavior: Clip.antiAlias,
+                    ),
+                    Text(
+                      'AppSignInUser',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                    Text(
+                      'developer@gmail.com',
+                      style: TextStyle(fontSize: 18),
+                    )
+                  ],
                 ),
-                Text(
-                  'developer@gmail.com',
-                  style: TextStyle(fontSize: 18),
-                )
-              ],
-            ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xfff12711), Color(0xfff5af19)],
-                stops: [0.0, 0.7],
               ),
-            ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Align(
-                  child: Text(
-                    'Account Info',
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                  ),
-                  alignment: Alignment.centerLeft,
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.all(15),
+                  children: [
+                    Align(
+                      child: Text(
+                        'Account Info',
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
+                      ),
+                      alignment: Alignment.centerLeft,
+                    ),
+                    UserInfoTile(
+                      title: 'Name',
+                      info: 'Ritesh Khadse',
+                    ),
+                    UserInfoTile(
+                      title: 'Mobile',
+                      info: '9876543210',
+                    ),
+                    UserInfoTile(
+                      title: 'Email',
+                      info: 'developer@dypALerts.com',
+                    ),
+                    UserInfoTile(
+                      title: 'D.O.B.',
+                      info: '12-06-2000',
+                    ),
+                  ],
                 ),
-                UserInfoTile(
-                  title: 'Name',
-                  info: 'Ritesh Khadse',
-                ),
-                UserInfoTile(
-                  title: 'Mobile',
-                  info: '9876543210',
-                ),
-                UserInfoTile(
-                  title: 'Email',
-                  info: 'developer@dypALerts.com',
-                ),
-                UserInfoTile(
-                  title: 'D.O.B.',
-                  info: '12-06-2000',
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

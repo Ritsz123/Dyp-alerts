@@ -1,6 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:getwidget/getwidget.dart';
-
+import 'package:dypalerts/screens/noticeboard_screen/SingleNoticeScreen.dart';
 import 'package:flutter/material.dart';
 
 class NoticeModel {
@@ -11,38 +10,60 @@ class NoticeModel {
   final List<MapEntry> time;
 }
 
-GFListTile getBuildNoticeTile(NoticeModel notice) {
-  return GFListTile(
-    padding: EdgeInsets.all(0),
-    avatar: GFAvatar(
-      backgroundColor: Colors.lightGreenAccent,
-    ),
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: Text(
-            notice.title,
-            style: kNoticeTitle,
+class NoticeTile extends StatelessWidget {
+  final NoticeModel notice;
+  NoticeTile({@required this.notice});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SingleNoticeScreen(
+              noticeModel: notice,
+            ),
           ),
-        ),
-        Column(
-          children: [
-            Text(
-              notice.time[0].value, //0 for hours & 1 for date
-              style: kNoticeTime,
+        );
+      },
+      // actual title
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              notice.title,
+              style: kNoticeTitle,
+              softWrap: true,
+              textAlign: TextAlign.left,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            Text(
-              notice.time[1].value,
-              style: kNoticeTime,
-            ),
-          ],
-        ),
-      ],
-    ),
-    subTitle: Text(
-      '- ${notice.author}',
-      style: kNoticeAuthor,
-    ),
-  );
+          ),
+        ],
+      ),
+      // author name
+      subtitle: Text(
+        '- ${notice.author}',
+        style: kNoticeAuthor,
+      ),
+      // for time
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            notice.time[0].value, //0 for hours & 1 for date
+            style: kNoticeTime,
+          ),
+          Text(
+            notice.time[1].value,
+            style: kNoticeTime,
+          ),
+        ],
+      ),
+
+//      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+    );
+  }
 }

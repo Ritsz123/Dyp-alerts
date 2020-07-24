@@ -14,40 +14,87 @@ class NoticeBoardScreen extends StatefulWidget {
 class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
   bool back = false;
 
-  void openSingleNotice(NoticeModel notice) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SingleNoticeScreen(
-          noticeModel: notice,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder(
-        stream: Firestore.instance.collection('notices').snapshots(),
-        builder: (context, snapshot) {
-          //loading
-          if (!snapshot.hasData) return loadingIndicator;
-          //list of notices from database
-          List<NoticeModel> _list = DatabaseService().getNotices(snapshot);
-          return ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index) => FlatButton(
-              onPressed: () {
-                openSingleNotice(_list[index]);
-              },
-              child: Card(
-                elevation: 5,
-                child: getBuildNoticeTile(_list[index]),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            height: screenHeight(context: context, divideBy: 3),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                alignment: Alignment.topCenter,
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/bg.png'),
               ),
             ),
-          );
-        },
+          ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 20),
+                    height: 64,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 35,
+                          backgroundColor: Colors.yellowAccent,
+                          //TODO: remove background color & add background image
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Ritesh Khadse',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              'TE comp',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream:
+                          Firestore.instance.collection('notices').snapshots(),
+                      builder: (context, snapshot) {
+                        //loading
+                        if (!snapshot.hasData) return loadingIndicator;
+                        //list of notices from database
+                        List<NoticeModel> _list =
+                            DatabaseService().getNotices(snapshot);
+                        return ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          itemBuilder: (context, index) => Card(
+                            elevation: 5,
+                            margin: EdgeInsets.all(5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: NoticeTile(
+                              notice: _list[index],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

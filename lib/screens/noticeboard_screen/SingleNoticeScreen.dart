@@ -15,14 +15,20 @@ class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
     NoticeModel currentNotice = widget.noticeModel;
     return Scaffold(
       appBar: GFAppBar(),
-      body: GFCard(
+      body: Card(
         margin: EdgeInsets.all(10),
-        title: getBuildNoticeTile(currentNotice),
-        content: Text(
-          currentNotice.description,
-          style: TextStyle(
-            fontSize: 20,
-          ),
+        child: Column(
+          children: [
+            NoticeTile(
+              notice: currentNotice,
+            ),
+            Text(
+              currentNotice.description,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          ],
         ),
       ),
     );

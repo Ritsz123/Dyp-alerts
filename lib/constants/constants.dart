@@ -20,3 +20,5 @@ const kNoticeTime = TextStyle(fontSize: 14);
 
 const kProfileDescTitle = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
 const kProfileDescInfo = TextStyle(fontSize: 20, color: Colors.blueGrey);
+
+const kCardTextStyle = TextStyle(fontSize: 24);

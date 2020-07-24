@@ -1,5 +1,6 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/home_screen/homeScreen.dart';
+import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen/loginScreen.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Dyp Alerts',
       theme: ThemeData.light(),
-      home: MainScreen(),
+      home: NewHomeScreen(),
     );
   }
 }

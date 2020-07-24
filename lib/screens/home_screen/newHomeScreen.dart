@@ -74,6 +74,14 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           label: 'Syllabus',
                           iconData: FontAwesomeIcons.newspaper,
                         ),
+                        DashCard(
+                          label: 'Discussions',
+                          iconData: FontAwesomeIcons.rocketchat,
+                        ),
+                        DashCard(
+                          label: 'Profile',
+                          iconData: FontAwesomeIcons.user,
+                        ),
                       ],
                     ),
                   ),

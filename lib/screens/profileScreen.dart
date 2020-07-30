@@ -1,7 +1,6 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -93,17 +92,18 @@ class UserInfoTile extends StatelessWidget {
   final String info;
   @override
   Widget build(BuildContext context) {
-    return GFListTile(
-      padding: EdgeInsets.all(0),
+    return ListTile(
+//      padding: EdgeInsets.all(0),
       title: Text(
         title,
         style: kProfileDescTitle,
       ),
-      subTitle: Text(
+
+      subtitle: Text(
         info,
         style: kProfileDescInfo,
       ),
-      avatar: Icon(Icons.account_circle),
+      leading: Icon(Icons.account_circle),
     );
   }
 }

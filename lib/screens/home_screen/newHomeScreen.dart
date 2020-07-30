@@ -1,9 +1,12 @@
 import 'package:dypalerts/constants/constants.dart';
+import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
 import 'package:dypalerts/screens/home_screen/dashCard.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';
 import 'package:dypalerts/screens/profileScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 
 class NewHomeScreen extends StatefulWidget {
   @override
@@ -75,8 +78,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => NoticeBoardScreen()));
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    child: NoticeBoardScreen()));
                           },
                         ),
                         DashCard(
@@ -91,6 +95,12 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           iconData: FontAwesomeIcons.rocketchat,
                           onTap: () {
                             //TODO:add functionality for Discussions
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.leftToRight,
+                                  child: DiscussScreen(),
+                                ));
                           },
                         ),
                         DashCard(
@@ -99,7 +109,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                           onTap: () {
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                     builder: (context) => ProfileScreen()));
                             //TODO:add functionality for profile
                           },

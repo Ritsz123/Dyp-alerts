@@ -42,8 +42,8 @@ dependencies:
   flutter_spinkit: ^4.1.2
   font_awesome_flutter: ^8.8.1
   provider: ^4.1.3
-#lib
-  getwidget: ^1.1.0
+#  animated page transition
+  page_transition: ^1.1.6
 
 
 dev_dependencies:

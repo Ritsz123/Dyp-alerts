@@ -1,5 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/home_screen/homeScreen.dart';
+
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class MainScreen extends StatelessWidget {
             child: loadingIndicator,
           );
         if (!snapshot.hasData || snapshot.data == null) return LoginScreen();
-        return HomeScreen();
+        return NewHomeScreen();
       },
     );
   }

@@ -1,6 +1,5 @@
 import 'package:dypalerts/model/noticeModel.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 
 class SingleNoticeScreen extends StatefulWidget {
   SingleNoticeScreen({@required this.noticeModel});
@@ -14,7 +13,7 @@ class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
   Widget build(BuildContext context) {
     NoticeModel currentNotice = widget.noticeModel;
     return Scaffold(
-      appBar: GFAppBar(),
+//      appBar: GFAppBar(),
       body: Card(
         margin: EdgeInsets.all(10),
         child: Column(

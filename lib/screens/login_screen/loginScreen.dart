@@ -1,5 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/home_screen/homeScreen.dart';
+import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _processLogin() async {
     Future.delayed(Duration(seconds: 5), () {
       _toggleLoading();
-      Navigator.pushNamed(context, HomeScreen.id);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => NewHomeScreen()));
     });
     print('Loading...');
     _toggleLoading();

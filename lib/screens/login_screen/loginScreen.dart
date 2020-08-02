@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static final id = 'loginScreen';
@@ -16,21 +17,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
-
   void _toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
     });
-  }
-
-  void _processLogin() async {
-    Future.delayed(Duration(seconds: 5), () {
-      _toggleLoading();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => NewHomeScreen()));
-    });
-    print('Loading...');
-    _toggleLoading();
   }
 
   @override
@@ -95,9 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             RoundedRectangleBorder(side: BorderSide(width: 1)),
                         onPressed: () async {
                           _toggleLoading();
-                          bool res = await AuthProvider().signInWithGoogle();
-                          if (!res) {
-                            print('Login Failed');
+                          try {
+                            final _auth = Provider.of<AuthProvider>(context,
+                                listen: false);
+                            String uid = await _auth.signInWithGoogle();
+                            print("User Logged in: $uid");
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NewHomeScreen()),
+                            );
+                          } catch (e) {
+                            print(e);
                           }
                         },
                       ),
@@ -112,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape:
                             RoundedRectangleBorder(side: BorderSide(width: 1)),
                         onPressed: () {
-                          _processLogin();
+//                          TODO: Implement fb login
                         },
                       ),
                     ),

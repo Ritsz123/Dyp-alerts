@@ -7,13 +7,6 @@ class DatabaseService {
   final CollectionReference userCollection =
       Firestore.instance.collection('users');
 
-  Future<void> updateUser(
-      String uid, String name, String email, String phoneNumber) async {
-    return await userCollection
-        .document(uid)
-        .setData({'name': name, 'email': email, 'phoneNumber': phoneNumber});
-  }
-
   List<NoticeModel> getNotices(AsyncSnapshot snapshot) {
     List<NoticeModel> noticeList = [];
     String title, author, timeAddedHours, timeAddedDate, description;
@@ -36,7 +29,6 @@ class DatabaseService {
 //        timeAdded,
       ));
     }
-
     return noticeList;
   }
 }

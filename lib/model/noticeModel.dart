@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 
 class NoticeModel {
   NoticeModel({this.title, this.description, this.author, this.time});
-  final String title;
-  final String description;
+
   final String author;
+  final String description;
   final List<MapEntry> time;
+  final String title;
 }
 
 class NoticeTile extends StatelessWidget {
-  final NoticeModel notice;
   NoticeTile({@required this.notice});
+
+  final NoticeModel notice;
 
   @override
   Widget build(BuildContext context) {

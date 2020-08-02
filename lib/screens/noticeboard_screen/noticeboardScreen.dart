@@ -58,8 +58,10 @@ class NoticeBoardScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: StreamBuilder(
-                      stream:
-                          Firestore.instance.collection('notices').snapshots(),
+                      stream: Firestore.instance
+                          .collection('notices')
+                          .orderBy("timeAdded", descending: true)
+                          .snapshots(),
                       builder: (context, snapshot) {
                         //loading
                         if (!snapshot.hasData) return loadingIndicator;

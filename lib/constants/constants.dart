@@ -19,6 +19,6 @@ const kNoticeAuthor = TextStyle(fontSize: 14);
 const kNoticeTime = TextStyle(fontSize: 14);
 
 const kProfileDescTitle = TextStyle(fontSize: 22, fontWeight: FontWeight.bold);
-const kProfileDescInfo = TextStyle(fontSize: 20, color: Colors.blueGrey);
+var kProfileDescInfo = TextStyle(fontSize: 20, color: Colors.blueGrey.shade700);
 
-const kCardTextStyle = TextStyle(fontSize: 24);
+const kCardTextStyle = TextStyle(fontSize: 24, fontWeight: FontWeight.bold);

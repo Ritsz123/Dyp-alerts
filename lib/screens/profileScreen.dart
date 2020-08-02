@@ -59,6 +59,9 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       alignment: Alignment.centerLeft,
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     UserInfoTile(
                       title: 'Name',
                       info: 'Ritesh Khadse',
@@ -70,6 +73,10 @@ class ProfileScreen extends StatelessWidget {
                     UserInfoTile(
                       title: 'Email',
                       info: 'developer@dypALerts.com',
+                    ),
+                    UserInfoTile(
+                      title: "Study Year",
+                      info: "TE",
                     ),
                     UserInfoTile(
                       title: 'D.O.B.',
@@ -103,7 +110,6 @@ class UserInfoTile extends StatelessWidget {
         info,
         style: kProfileDescInfo,
       ),
-      leading: Icon(Icons.account_circle),
     );
   }
 }

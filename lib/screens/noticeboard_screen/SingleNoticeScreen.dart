@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class SingleNoticeScreen extends StatefulWidget {
   SingleNoticeScreen({@required this.noticeModel});
+
   final NoticeModel noticeModel;
+
   @override
   _SingleNoticeScreenState createState() => _SingleNoticeScreenState();
 }

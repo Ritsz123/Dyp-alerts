@@ -1,7 +1,8 @@
 import 'package:dypalerts/constants/constants.dart';
-
+import 'package:dypalerts/screens/login_screen/newUserDataInputScreen.dart';
+import 'package:dypalerts/services/auth.dart';
+import 'package:provider/provider.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen/loginScreen.dart';
 
@@ -13,10 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dyp Alerts',
-      theme: ThemeData.light(),
-      home: NewHomeScreen(),
+    return Provider<AuthProvider>(
+      create: (_) => AuthProvider(), //get user
+      child: MaterialApp(
+        title: 'Dyp Alerts',
+        theme: ThemeData.light(),
+        home: Scaffold(
+          body: UserDataScreen(),
+        ),
+        //TODO: change to mainScreen
+      ),
     );
   }
 }
@@ -24,15 +31,17 @@ class MyApp extends StatelessWidget {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return Center(
-            child: loadingIndicator,
-          );
-        if (!snapshot.hasData || snapshot.data == null) return LoginScreen();
-        return NewHomeScreen();
+    final AuthProvider auth = Provider.of<AuthProvider>(context);
+    return StreamBuilder<String>(
+      stream: auth.onAuthStateChanged,
+      builder: (context, AsyncSnapshot<String> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final bool signedIn = snapshot.hasData;
+          return signedIn ? NewHomeScreen() : LoginScreen();
+        }
+        return Center(
+          child: loadingIndicator,
+        );
       },
     );
   }

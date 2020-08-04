@@ -40,10 +40,13 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Colors.yellowAccent,
-                          //TODO: remove background color & add background image
+                        Hero(
+                          tag: 'profilePic',
+                          child: CircleAvatar(
+                            radius: 35,
+                            backgroundColor: Colors.yellowAccent,
+                            //TODO: remove background color & add background image
+                          ),
                         ),
                         SizedBox(
                           width: 15,

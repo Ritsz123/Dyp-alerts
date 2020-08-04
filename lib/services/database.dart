@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dypalerts/model/noticeModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:dypalerts/model/userModel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class DatabaseService {
   final CollectionReference userCollection =
@@ -24,11 +27,34 @@ class DatabaseService {
         time: [
           MapEntry('hrs', timeAddedHours),
           MapEntry('date', timeAddedDate)
-        ],
-
-//        timeAdded,
+        ], //timeAdded,
       ));
     }
     return noticeList;
+  }
+
+  Future updateUserDataInDatabase(UserModel user) async {
+    String userId = user.uid;
+    return await userCollection.document(userId).setData({
+      'name': user.name,
+      'email': user.email,
+      'phone': user.phone,
+      'studyYear': user.studyYear,
+      'dept': user.dept,
+      'dob': user.dob,
+      'profileUrl': user.profileUrl,
+    });
+  }
+
+  Future<String> uploadImage(String imageName, File profileImage) async {
+    final StorageReference _storageReference = FirebaseStorage()
+        .ref()
+        .child('userData')
+        .child('profilePics')
+        .child(imageName); //the name of file;
+    _storageReference.putFile(profileImage);
+    String imageUrl = await _storageReference.getDownloadURL();
+    print('Upload Successful:  $imageUrl');
+    return imageUrl;
   }
 }

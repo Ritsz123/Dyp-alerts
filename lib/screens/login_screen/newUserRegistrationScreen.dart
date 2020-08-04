@@ -3,41 +3,85 @@ import 'package:dypalerts/model/userModel.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
 import 'package:dypalerts/widgets/input.dart';
+
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+import 'dart:io';
 
-class UserDataScreen extends StatefulWidget {
+class NewUserRegScreen extends StatefulWidget {
   @override
-  _UserDataScreenState createState() => _UserDataScreenState();
+  _NewUserRegScreenState createState() => _NewUserRegScreenState();
 }
 
-class _UserDataScreenState extends State<UserDataScreen> {
+class _NewUserRegScreenState extends State<NewUserRegScreen> {
   UserModel user;
-
   final AuthProvider _authProvider = AuthProvider();
-
   final DatabaseService _dbService = DatabaseService();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _dept;
-  String _email;
-  DateTime _dateOfBirth;
   String _name;
+  String _email;
   String _phone;
   String _studyYear;
+  String _dept;
+  DateTime _dateOfBirth;
+  PickedFile _imageFile;
+  String _profileUrl;
 
-  Future updateUserDataInDatabase(UserModel user) async {
+  Widget formSpace = SizedBox(height: 10);
+
+  Future<UserModel> createUser() async {
     String userID = await _authProvider.getCurrentUID();
+    user = UserModel(
+        dept: _dept,
+        dob: _dateOfBirth,
+        email: _email,
+        name: _name,
+        phone: _phone,
+        profileUrl: _profileUrl,
+        studyYear: _studyYear,
+        uid: userID);
+    return user;
+  }
 
-    return await _dbService.userCollection.document(userID).setData({
-      'name': user.name,
-      'email': user.email,
-      'phone': user.phone,
-      'studyYear': user.studyYear,
-      'department': user.collegeDept,
-      'dob': user.dob,
+  Future getImage() async {
+    final picker = ImagePicker();
+    var tempImage = await picker.getImage(
+      source: ImageSource.gallery,
+      maxWidth: 250,
+      maxHeight: 250,
+    );
+    setState(() {
+      _imageFile = tempImage;
+      print('Image URL: ${_imageFile.path}');
     });
+  }
+
+  Widget _buildProfilePic() {
+    return GestureDetector(
+      onTap: () => getImage(),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          CircleAvatar(
+            radius: screenHeight(context: context, divideBy: 10),
+            backgroundImage: _imageFile != null
+                ? FileImage(File(_imageFile.path))
+                : AssetImage('assets/images/profile_default.png'),
+          ),
+          _imageFile == null
+              ? Text(
+                  'Click to add profile',
+                  style: TextStyle(color: Colors.blueGrey),
+                )
+              : Container()
+        ],
+      ),
+    );
   }
 
   Widget _buildInputName() {
@@ -70,6 +114,11 @@ class _UserDataScreenState extends State<UserDataScreen> {
           return 'Phone Number should be of 10 digits';
         }
         return null;
+      },
+      onSave: (value) {
+        setState(() {
+          _phone = value;
+        });
       },
       successColor: Colors.green,
       inputIcon: Icon(Icons.phone_android),
@@ -184,7 +233,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
   @override
   void initState() {
     super.initState();
-    _email = "someemail@google.com"; //TODO: initialize
+    _email = 'r989898k@gmail.com';
   }
 
   @override
@@ -213,49 +262,20 @@ class _UserDataScreenState extends State<UserDataScreen> {
                 child: Form(
                   key: _formKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      _buildProfilePic(),
+                      formSpace,
                       _buildInputName(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      formSpace,
                       _buildInputPhone(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      formSpace,
                       _buildInputEmail(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      formSpace,
                       _buildBirthDateField(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      formSpace,
                       _buildStudyYear(),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      formSpace,
                       _buildDept(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      RaisedButton(
-                        child: Text('Submit'),
-                        onPressed: () {
-                          if (!_formKey.currentState.validate()) {
-                            return;
-                          }
-                          _formKey.currentState.save();
-                          user = UserModel(
-                              name: _name,
-                              collegeDept: _dept,
-                              dob: _dateOfBirth,
-                              email: _email,
-                              phone: _phone,
-                              studyYear: _studyYear);
-//                        print("${user.name}");
-                        },
-                      ),
                     ],
                   ),
                 ),
@@ -263,6 +283,25 @@ class _UserDataScreenState extends State<UserDataScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_forward_ios),
+        onPressed: () async {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
+          _formKey.currentState.save();
+          user = await createUser();
+          if (_imageFile != null) {
+            String imageUrl =
+                await _dbService.uploadImage(user.uid, File(_imageFile.path));
+            setState(() {
+              _profileUrl = imageUrl;
+              user.profileUrl = _profileUrl; //setting user profile url
+            });
+          }
+          _dbService.updateUserDataInDatabase(user); //put user data
+        },
       ),
     );
   }

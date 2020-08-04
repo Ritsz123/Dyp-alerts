@@ -1,15 +1,21 @@
 class UserModel {
-  final String name;
-  final String phone;
-  final String email;
-  final String studyYear;
-  final DateTime dob;
-  final String collegeDept;
-  UserModel(
-      {this.collegeDept,
-      this.email,
-      this.name,
-      this.dob,
-      this.phone,
-      this.studyYear});
+  String uid;
+  String name;
+  String phone;
+  String email;
+  String studyYear;
+  DateTime dob;
+  String dept;
+  String profileUrl;
+
+  UserModel({
+    this.dept,
+    this.dob,
+    this.email,
+    this.name,
+    this.phone,
+    this.profileUrl,
+    this.studyYear,
+    this.uid,
+  });
 }

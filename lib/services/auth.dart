@@ -1,15 +1,13 @@
-import 'package:dypalerts/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthProvider {
-  DatabaseService dbService = DatabaseService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  FirebaseUser user;
 
-  Stream<String> get onAuthStateChanged => _firebaseAuth.onAuthStateChanged.map(
-        (FirebaseUser user) => user.uid,
-      );
+  Stream<String> get onAuthStateChanged =>
+      _firebaseAuth.onAuthStateChanged.map((FirebaseUser user) => user.uid);
 
   Future<String> signInWithGoogle() async {
     final GoogleSignInAccount account = await _googleSignIn.signIn();
@@ -18,8 +16,7 @@ class AuthProvider {
       idToken: _googleAuth.idToken,
       accessToken: _googleAuth.accessToken,
     );
-    FirebaseUser user =
-        (await _firebaseAuth.signInWithCredential(credential)).user;
+    user = (await _firebaseAuth.signInWithCredential(credential)).user;
     String userId = user.uid;
     //update data in database;
     return userId;
@@ -28,6 +25,11 @@ class AuthProvider {
   //get Current user
   Future getCurrentUser() async {
     return await _firebaseAuth.currentUser();
+  }
+
+// GET Email
+  Future<String> getUserEmail() async {
+    return user.email;
   }
 
   // GET UID
@@ -53,7 +55,7 @@ class AuthProvider {
 //          user.displayName,
 //          user.email,
 //          user.phoneNumber,
-//        ); //for database //TODO:Update this
+//        ); //for database
 //        return true;
 //      }
 //    } catch (e) {

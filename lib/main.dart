@@ -1,5 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/login_screen/newUserDataInputScreen.dart';
+import 'package:dypalerts/screens/login_screen/newUserRegistrationScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'Dyp Alerts',
         theme: ThemeData.light(),
         home: Scaffold(
-          body: UserDataScreen(),
+          body: MainScreen(),
         ),
         //TODO: change to mainScreen
       ),
@@ -37,7 +37,7 @@ class MainScreen extends StatelessWidget {
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool signedIn = snapshot.hasData;
-          return signedIn ? NewHomeScreen() : LoginScreen();
+          return signedIn ? NewUserRegScreen() : LoginScreen();
         }
         return Center(
           child: loadingIndicator,

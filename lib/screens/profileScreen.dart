@@ -27,10 +27,13 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Card(
-                      child: CircleAvatar(
-                        radius: screenHeight(context: context, divideBy: 13),
-                        backgroundColor: Colors.yellowAccent,
-                        //TODO: change color to background image
+                      child: Hero(
+                        tag: 'profilePic',
+                        child: CircleAvatar(
+                          radius: screenHeight(context: context, divideBy: 13),
+                          backgroundColor: Colors.yellowAccent,
+                          //TODO: change color to background image
+                        ),
                       ),
                       elevation: 10,
                       shape: CircleBorder(),

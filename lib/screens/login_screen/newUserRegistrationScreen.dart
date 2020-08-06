@@ -1,15 +1,17 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/userModel.dart';
+import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
 import 'package:dypalerts/widgets/input.dart';
-
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
+
+import 'package:loading_overlay/loading_overlay.dart';
 
 class NewUserRegScreen extends StatefulWidget {
   @override
@@ -20,7 +22,6 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
   UserModel user;
   final AuthProvider _authProvider = AuthProvider();
   final DatabaseService _dbService = DatabaseService();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _name;
@@ -35,7 +36,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
   Widget formSpace = SizedBox(height: 10);
 
   Future<UserModel> createUser() async {
-    String userID = await _authProvider.getCurrentUID();
+    String userID = await _authProvider.getCurrentUserID();
     user = UserModel(
         dept: _dept,
         dob: _dateOfBirth,
@@ -55,10 +56,12 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
       maxWidth: 250,
       maxHeight: 250,
     );
-    setState(() {
-      _imageFile = tempImage;
-      print('Image URL: ${_imageFile.path}');
-    });
+    if (tempImage != null) {
+      setState(() {
+        _imageFile = tempImage;
+        print('Image URL: ${_imageFile.path}');
+      });
+    }
   }
 
   Widget _buildProfilePic() {
@@ -236,6 +239,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
     _email = 'r989898k@gmail.com';
   }
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -243,46 +247,49 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
         title: Text('DYPALERTS'),
         centerTitle: true,
       ),
-      body: Stack(
-        children: [
-          Container(
-            height: screenHeight(context: context, divideBy: 3),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                alignment: Alignment.topCenter,
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/bg.png'),
+      body: LoadingOverlay(
+        isLoading: isLoading,
+        child: Stack(
+          children: [
+            Container(
+              height: screenHeight(context: context, divideBy: 3),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  alignment: Alignment.topCenter,
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/bg.png'),
+                ),
               ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(25),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      _buildProfilePic(),
-                      formSpace,
-                      _buildInputName(),
-                      formSpace,
-                      _buildInputPhone(),
-                      formSpace,
-                      _buildInputEmail(),
-                      formSpace,
-                      _buildBirthDateField(),
-                      formSpace,
-                      _buildStudyYear(),
-                      formSpace,
-                      _buildDept(),
-                    ],
+            SingleChildScrollView(
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        _buildProfilePic(),
+                        formSpace,
+                        _buildInputName(),
+                        formSpace,
+                        _buildInputPhone(),
+                        formSpace,
+                        _buildInputEmail(),
+                        formSpace,
+                        _buildBirthDateField(),
+                        formSpace,
+                        _buildStudyYear(),
+                        formSpace,
+                        _buildDept(),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_forward_ios),
@@ -291,6 +298,9 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
             return;
           }
           _formKey.currentState.save();
+          setState(() {
+            isLoading = true;
+          });
           user = await createUser();
           if (_imageFile != null) {
             String imageUrl =
@@ -300,7 +310,13 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
               user.profileUrl = _profileUrl; //setting user profile url
             });
           }
-          _dbService.updateUserDataInDatabase(user); //put user data
+          await _dbService.updateUserDataInDatabase(user); //put user data
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewHomeScreen(),
+            ),
+          );
         },
       ),
     );

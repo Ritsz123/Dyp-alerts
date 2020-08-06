@@ -1,12 +1,11 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
-import 'package:dypalerts/services/auth.dart';
+import 'package:dypalerts/services/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static final id = 'loginScreen';
@@ -85,19 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             RoundedRectangleBorder(side: BorderSide(width: 1)),
                         onPressed: () async {
                           _toggleLoading();
-                          try {
-                            final _auth = Provider.of<AuthProvider>(context,
-                                listen: false);
-                            String uid = await _auth.signInWithGoogle();
-                            print("User Logged in: $uid");
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => NewHomeScreen()),
-                            );
-                          } catch (e) {
-                            print(e);
-                          }
+
+                          final _auth = Provider.of(context).auth;
+                          String uid = await _auth.signinWithGoogle();
+                          print("User Logged in: $uid");
                         },
                       ),
                     ),
@@ -110,8 +100,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         Buttons.Facebook,
                         shape:
                             RoundedRectangleBorder(side: BorderSide(width: 1)),
-                        onPressed: () {
-//                          TODO: Implement fb login
+                        onPressed: () async {
+                          _toggleLoading();
+                          final _auth = Provider.of(context).auth;
+                          String uid = await _auth.signinWithFacebook();
+                          print("Facebook user Loggedin $uid");
                         },
                       ),
                     ),

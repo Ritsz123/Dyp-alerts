@@ -33,9 +33,14 @@ class DatabaseService {
     return noticeList;
   }
 
+  checkIfUserPresent() {
+    //
+  }
+
   Future updateUserDataInDatabase(UserModel user) async {
     String userId = user.uid;
-    return await userCollection.document(userId).setData({
+
+    await userCollection.document(userId).setData({
       'name': user.name,
       'email': user.email,
       'phone': user.phone,
@@ -43,17 +48,26 @@ class DatabaseService {
       'dept': user.dept,
       'dob': user.dob,
       'profileUrl': user.profileUrl,
+    }).whenComplete(() {
+      return true;
     });
   }
 
-  Future<String> uploadImage(String imageName, File profileImage) async {
+  Future<String> uploadImage(String imageName, File image) async {
+    String imageUrl;
     final StorageReference _storageReference = FirebaseStorage()
         .ref()
         .child('userData')
         .child('profilePics')
         .child(imageName); //the name of file;
-    _storageReference.putFile(profileImage);
-    String imageUrl = await _storageReference.getDownloadURL();
+    print('uploading....');
+    StorageTaskSnapshot snapshot =
+        await _storageReference.putFile(image).onComplete;
+    if (snapshot.error == null) {
+      imageUrl = await snapshot.ref.getDownloadURL();
+    } else {
+      print('error in uploading image ${snapshot.error.toString()}');
+    }
     print('Upload Successful:  $imageUrl');
     return imageUrl;
   }

@@ -1,4 +1,5 @@
 import 'package:dypalerts/model/noticeModel.dart';
+import 'package:dypalerts/screens/noticeboard_screen/noticeTile.dart';
 import 'package:flutter/material.dart';
 
 class SingleNoticeScreen extends StatefulWidget {

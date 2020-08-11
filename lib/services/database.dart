@@ -7,10 +7,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 class DatabaseService {
+  final String uid;
+  DatabaseService({this.uid});
+
   final CollectionReference userCollection =
       Firestore.instance.collection('users');
+  final CollectionReference noticeCollection =
+      Firestore.instance.collection('notices');
 
-  List<NoticeModel> getNotices(AsyncSnapshot snapshot) {
+  List<NoticeModel> getNoticeList(AsyncSnapshot snapshot) {
     List<NoticeModel> noticeList = [];
     String title, author, timeAddedHours, timeAddedDate, description;
     for (var snap in snapshot.data.documents) {
@@ -33,14 +38,14 @@ class DatabaseService {
     return noticeList;
   }
 
-  checkIfUserPresent() {
-    //
-  }
+  // checkIfUserPresent() {
+  //   //
+  // }
 
+// create user in database
   Future updateUserDataInDatabase(UserModel user) async {
-    String userId = user.uid;
-
-    await userCollection.document(userId).setData({
+    if (uid == null || uid.isEmpty) return false;
+    await userCollection.document(uid).setData({
       'name': user.name,
       'email': user.email,
       'phone': user.phone,
@@ -53,13 +58,13 @@ class DatabaseService {
     });
   }
 
-  Future<String> uploadImage(String imageName, File image) async {
+  Future<String> uploadImage(File image) async {
     String imageUrl;
     final StorageReference _storageReference = FirebaseStorage()
         .ref()
         .child('userData')
         .child('profilePics')
-        .child(imageName); //the name of file;
+        .child(uid); //the name of file;
     print('uploading....');
     StorageTaskSnapshot snapshot =
         await _storageReference.putFile(image).onComplete;

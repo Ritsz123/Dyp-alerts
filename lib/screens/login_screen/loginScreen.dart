@@ -1,9 +1,7 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:dypalerts/services/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -16,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
+
   void _toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
@@ -77,17 +76,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: screenHeight(context: context, divideBy: 18),
-                      child: SignInButton(
-                        Buttons.Google,
-                        shape:
-                            RoundedRectangleBorder(side: BorderSide(width: 1)),
+                      height: 50,
+                      child: RaisedButton(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                'assets/images/google_logo1.png',
+                              ),
+                              height: 40,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Sign in with Google',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
+                        ),
                         onPressed: () async {
                           _toggleLoading();
-
                           final _auth = Provider.of(context).auth;
                           String uid = await _auth.signinWithGoogle();
-                          print("User Logged in: $uid");
+                          print("Google User Logged in: $uid");
+                          _toggleLoading();
                         },
                       ),
                     ),
@@ -95,16 +111,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 15,
                     ),
                     SizedBox(
-                      height: screenHeight(context: context, divideBy: 18),
-                      child: SignInButton(
-                        Buttons.Facebook,
-                        shape:
-                            RoundedRectangleBorder(side: BorderSide(width: 1)),
+                      height: 50,
+                      child: RaisedButton(
+                        color: Color(0xff314C7B),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                'assets/images/facebook_logo.png',
+                              ),
+                              height: 40,
+                            ),
+                            SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              'Sign in with Facebook',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                          ],
+                        ),
                         onPressed: () async {
                           _toggleLoading();
                           final _auth = Provider.of(context).auth;
                           String uid = await _auth.signinWithFacebook();
                           print("Facebook user Loggedin $uid");
+                          _toggleLoading();
                         },
                       ),
                     ),

@@ -1,9 +1,10 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/noticeModel.dart';
+import 'package:dypalerts/screens/noticeboard_screen/noticeList.dart';
 import 'package:dypalerts/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class NoticeBoardScreen extends StatelessWidget {
   @override
@@ -57,34 +58,11 @@ class NoticeBoardScreen extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: StreamBuilder(
-                      stream: Firestore.instance
-                          .collection('notices')
-                          .orderBy("timeAdded", descending: true)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        //loading
-                        if (!snapshot.hasData) return loadingIndicator;
-                        //list of notices from database
-                        List<NoticeModel> _list =
-                            DatabaseService().getNotices(snapshot);
-
-                        return ListView.builder(
-                          itemCount: snapshot.data.documents.length,
-                          itemBuilder: (context, index) => Card(
-                            elevation: 5,
-                            margin: EdgeInsets.all(5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: NoticeTile(
-                              notice: _list[index],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    child: NoticeList(),
                   ),
+                  // Expanded(
+                  //   child:
+                  // ),
                 ],
               ),
             ),

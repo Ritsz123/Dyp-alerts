@@ -21,7 +21,6 @@ class NewUserRegScreen extends StatefulWidget {
 class _NewUserRegScreenState extends State<NewUserRegScreen> {
   UserModel user;
   final AuthProvider _authProvider = AuthProvider();
-  final DatabaseService _dbService = DatabaseService();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _name;
@@ -301,10 +300,11 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
           setState(() {
             isLoading = true;
           });
-          user = await createUser();
+          user = await createUser(); //locally create user
+          final DatabaseService _dbService = DatabaseService(uid: user.uid);
           if (_imageFile != null) {
             String imageUrl =
-                await _dbService.uploadImage(user.uid, File(_imageFile.path));
+                await _dbService.uploadImage(File(_imageFile.path));
             setState(() {
               _profileUrl = imageUrl;
               user.profileUrl = _profileUrl; //setting user profile url

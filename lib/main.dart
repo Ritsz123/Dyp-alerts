@@ -36,7 +36,10 @@ class MainScreen extends StatelessWidget {
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool signedIn = snapshot.hasData;
-          return signedIn ? NewHomeScreen() : LoginScreen();
+          return signedIn
+              ? NewHomeScreen()
+              //TODO: check if user already exists
+              : LoginScreen();
         }
         return Center(
           child: loadingIndicator,

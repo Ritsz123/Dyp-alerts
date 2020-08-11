@@ -14,6 +14,8 @@ class NewHomeScreen extends StatefulWidget {
 }
 
 class _NewHomeScreenState extends State<NewHomeScreen> {
+  bool _showNotices = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

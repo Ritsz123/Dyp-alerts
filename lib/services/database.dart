@@ -38,10 +38,6 @@ class DatabaseService {
     return noticeList;
   }
 
-  // checkIfUserPresent() {
-  //   //
-  // }
-
 // create user in database
   Future updateUserDataInDatabase(UserModel user) async {
     if (uid == null || uid.isEmpty) return false;
@@ -56,6 +52,10 @@ class DatabaseService {
     }).whenComplete(() {
       return true;
     });
+  }
+
+  Future<UserModel> getUserDataFromDatabase() {
+    //TODO:Implement this
   }
 
   Future<String> uploadImage(File image) async {

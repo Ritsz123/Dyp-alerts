@@ -1,10 +1,7 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/model/noticeModel.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeList.dart';
-import 'package:dypalerts/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class NoticeBoardScreen extends StatelessWidget {
   @override

@@ -1,5 +1,4 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/screens/login_screen/newUserRegistrationScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/provider.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
@@ -36,10 +35,8 @@ class MainScreen extends StatelessWidget {
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool signedIn = snapshot.hasData;
-          return signedIn
-              ? NewHomeScreen()
-              //TODO: check if user already exists
-              : LoginScreen();
+
+          return signedIn ? NewHomeScreen() : LoginScreen();
         }
         return Center(
           child: loadingIndicator,

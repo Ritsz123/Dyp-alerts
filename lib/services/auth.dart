@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
+enum userType { oldUser, newUser }
+
 abstract class AuthBase {
   Stream<String> get onAuthStateChanged;
 
@@ -12,6 +14,8 @@ abstract class AuthBase {
   Future<String> signinWithFacebook();
 
   Future<String> getCurrentUserID();
+
+  Future<FirebaseUser> getCurrentUser();
 }
 
 class AuthProvider implements AuthBase {
@@ -49,8 +53,10 @@ class AuthProvider implements AuthBase {
         idToken: _googleAuth.idToken,
         accessToken: _googleAuth.accessToken,
       );
-      FirebaseUser user =
-          (await _firebaseAuth.signInWithCredential(credential)).user;
+      AuthResult result = await _firebaseAuth.signInWithCredential(credential);
+
+      result.additionalUserInfo.isNewUser;
+      FirebaseUser user = result.user;
       return user.uid;
     } catch (e) {
       print('Exception in google login: $e');
@@ -59,8 +65,10 @@ class AuthProvider implements AuthBase {
   }
 
   @override
-  Future<void> signout() {
-    return FirebaseAuth.instance.signOut();
+  Future<void> signout() async {
+    _googleSignIn.signOut();
+    _facebookLogin.logOut();
+    return await _firebaseAuth.signOut();
   }
 
   Stream<String> get onAuthStateChanged =>
@@ -69,5 +77,10 @@ class AuthProvider implements AuthBase {
   // GET UID
   Future<String> getCurrentUserID() async {
     return (await _firebaseAuth.currentUser()).uid;
+  }
+
+  @override
+  Future<FirebaseUser> getCurrentUser() {
+    return _firebaseAuth.currentUser();
   }
 }

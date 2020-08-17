@@ -61,6 +61,7 @@ class DatabaseService {
     var docs = await userCollection.document(uid).get();
     print('Name: ${docs.data['name']}');
     var usr = docs.data;
+
     UserModel currentUser = UserModel(
       dept: usr['dept'],
       dob: usr['dob'].toDate(),

@@ -8,8 +8,8 @@ import 'package:dypalerts/screens/profileScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
 import 'package:dypalerts/services/provider.dart';
-import 'package:dypalerts/widgets/background.dart';
-import 'package:dypalerts/widgets/userInfoContainer.dart';
+import 'package:dypalerts/commonWidgets/background.dart';
+import 'package:dypalerts/commonWidgets/userInfoContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +70,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                         context,
                                         PageTransition(
                                             type: PageTransitionType.fade,
-                                            child: NoticeBoardScreen()));
+                                            child: NoticeBoardScreen(
+                                              currentUser: currentUser,
+                                            )));
                                   },
                                 ),
                                 DashCard(
@@ -99,7 +101,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) => ProfileScreen(),
+                                        builder: (context) => ProfileScreen(
+                                          currentUser: currentUser,
+                                        ),
                                       ),
                                     );
                                   },
@@ -133,7 +137,8 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
         user.metadata.creationTime.hour == DateTime.now().hour &&
         user.metadata.creationTime.minute == DateTime.now().minute) {
       print("New user created");
-      Navigator.push(
+      Navigator.pushReplacement(
+        //TODO: check for some problem
         context,
         MaterialPageRoute(builder: (context) => NewUserRegScreen()),
       );

@@ -1,4 +1,4 @@
-import 'package:dypalerts/widgets/customFormfield.dart';
+import 'package:dypalerts/commonWidgets/customFormfield.dart';
 import 'package:flutter/material.dart';
 
 enum InputStatus { valid, invalid, none }

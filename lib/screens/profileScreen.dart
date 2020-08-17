@@ -1,8 +1,20 @@
 import 'package:dypalerts/constants/constants.dart';
+import 'package:dypalerts/model/userModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  ProfileScreen({@required this.currentUser});
+  final UserModel currentUser;
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool isEditing = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +44,9 @@ class ProfileScreen extends StatelessWidget {
                         child: CircleAvatar(
                           radius: screenHeight(context: context, divideBy: 13),
                           backgroundColor: Colors.yellowAccent,
-                          //TODO: change color to background image
+                          backgroundImage: widget.currentUser.profileUrl != null
+                              ? NetworkImage(widget.currentUser.profileUrl)
+                              : AssetImage('assets/images/profile_default.png'),
                         ),
                       ),
                       elevation: 10,
@@ -40,11 +54,12 @@ class ProfileScreen extends StatelessWidget {
                       clipBehavior: Clip.antiAlias,
                     ),
                     Text(
-                      'AppSignInUser',
-                      style: TextStyle(fontSize: 35),
+                      widget.currentUser.name,
+                      style:
+                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'developer@gmail.com',
+                      widget.currentUser.email,
                       style: TextStyle(fontSize: 18),
                     )
                   ],
@@ -67,23 +82,25 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     UserInfoTile(
                       title: 'Name',
-                      info: 'Ritesh Khadse',
+                      info: widget.currentUser.name,
                     ),
                     UserInfoTile(
                       title: 'Mobile',
-                      info: '9876543210',
+                      info: widget.currentUser.phone,
                     ),
                     UserInfoTile(
                       title: 'Email',
-                      info: 'developer@dypALerts.com',
+                      info: widget.currentUser.email,
                     ),
+                    // isEditing? :
                     UserInfoTile(
                       title: "Study Year",
-                      info: "TE",
+                      info: widget.currentUser.studyYear,
                     ),
                     UserInfoTile(
                       title: 'D.O.B.',
-                      info: '12-06-2000',
+                      info: DateFormat('dd MMM yyyy')
+                          .format(widget.currentUser.dob),
                     ),
                   ],
                 ),

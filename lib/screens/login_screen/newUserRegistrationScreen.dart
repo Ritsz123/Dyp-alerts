@@ -3,6 +3,7 @@ import 'package:dypalerts/model/userModel.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
+import 'package:dypalerts/widgets/background.dart';
 import 'package:dypalerts/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -250,16 +251,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
         isLoading: isLoading,
         child: Stack(
           children: [
-            Container(
-              height: screenHeight(context: context, divideBy: 3),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  alignment: Alignment.topCenter,
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/images/bg.png'),
-                ),
-              ),
-            ),
+            BackgroundContainer(),
             SingleChildScrollView(
               child: Card(
                 child: Padding(

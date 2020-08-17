@@ -1,4 +1,5 @@
 import 'package:dypalerts/constants/constants.dart';
+import 'package:dypalerts/model/userModel.dart';
 import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
 import 'package:dypalerts/screens/home_screen/dashCard.dart';
 import 'package:dypalerts/screens/login_screen/newUserRegistrationScreen.dart';
@@ -24,6 +25,9 @@ class NewHomeScreen extends StatefulWidget {
 class _NewHomeScreenState extends State<NewHomeScreen> {
   bool isLoading = true;
   final DatabaseService dbService = DatabaseService();
+  UserModel currentUser; //actual data of user from database
+
+//Dummy data
 
   @override
   void initState() {
@@ -49,7 +53,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                       padding: EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          UserInfoContainer(),
+                          UserInfoContainer(user: currentUser),
                           Expanded(
                             child: GridView.count(
                               crossAxisCount:
@@ -138,7 +142,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       // });
     } else {
       print("Existing User");
+      UserModel usrdata = await dbService.getUserDataFromDatabase();
       setState(() {
+        currentUser = usrdata;
         isLoading = false;
       });
     }

@@ -13,7 +13,6 @@ class DashCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('$label pressed.');
-        //TODO: add functionality
         onTap();
       },
       child: Card(

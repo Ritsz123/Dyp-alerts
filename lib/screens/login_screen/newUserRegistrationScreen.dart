@@ -38,14 +38,15 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
   Future<UserModel> createUser() async {
     String userID = await _authProvider.getCurrentUserID();
     user = UserModel(
-        dept: _dept,
-        dob: _dateOfBirth,
-        email: _email,
-        name: _name,
-        phone: _phone,
-        profileUrl: _profileUrl,
-        studyYear: _studyYear,
-        uid: userID);
+      dept: _dept,
+      dob: _dateOfBirth,
+      email: _email,
+      name: _name,
+      phone: _phone,
+      profileUrl: _profileUrl,
+      studyYear: _studyYear,
+      uid: userID,
+    );
     return user;
   }
 
@@ -190,7 +191,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
       items: [
         DropdownMenuItem<String>(
           child: Text('Computer'),
-          value: 'comp',
+          value: 'Comp',
         ),
         DropdownMenuItem<String>(
           child: Text('Information Technology'),
@@ -198,11 +199,11 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
         ),
         DropdownMenuItem<String>(
           child: Text('Electronics & TC'),
-          value: 'entc',
+          value: 'EnTC',
         ),
         DropdownMenuItem<String>(
           child: Text('Mechanical'),
-          value: 'mech',
+          value: 'Mech',
         ),
       ],
     );

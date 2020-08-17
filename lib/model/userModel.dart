@@ -9,6 +9,7 @@ class UserModel {
   String profileUrl;
 
   UserModel({
+    this.uid,
     this.dept,
     this.dob,
     this.email,
@@ -16,6 +17,5 @@ class UserModel {
     this.phone,
     this.profileUrl,
     this.studyYear,
-    this.uid,
   });
 }

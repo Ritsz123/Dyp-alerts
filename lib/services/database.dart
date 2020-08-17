@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dypalerts/model/noticeModel.dart';
+import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:dypalerts/model/userModel.dart';
@@ -49,13 +50,28 @@ class DatabaseService {
       'dept': user.dept,
       'dob': user.dob,
       'profileUrl': user.profileUrl,
+      'uid': user.uid,
     }).whenComplete(() {
       return true;
     });
   }
 
-  Future<UserModel> getUserDataFromDatabase() {
-    //TODO:Implement this
+  Future<UserModel> getUserDataFromDatabase() async {
+    String uid = await AuthProvider().getCurrentUserID();
+    var docs = await userCollection.document(uid).get();
+    print('Name: ${docs.data['name']}');
+    var usr = docs.data;
+    UserModel currentUser = UserModel(
+      dept: usr['dept'],
+      dob: usr['dob'].toDate(),
+      email: usr['email'],
+      name: usr['name'],
+      phone: usr['phone'],
+      profileUrl: usr['profileUrl'],
+      studyYear: usr['studyYear'],
+      uid: usr['uid'],
+    );
+    return currentUser;
   }
 
   Future<String> uploadImage(File image) async {

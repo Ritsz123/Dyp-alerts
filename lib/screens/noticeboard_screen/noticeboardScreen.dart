@@ -1,4 +1,3 @@
-import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeList.dart';
 import 'package:dypalerts/widgets/background.dart';
 import 'package:dypalerts/widgets/userInfoContainer.dart';
@@ -17,7 +16,7 @@ class NoticeBoardScreen extends StatelessWidget {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  UserInfoContainer(),
+                  // userInfo, //from UserInfoContainer
                   Expanded(
                     child: NoticeList(),
                   ),

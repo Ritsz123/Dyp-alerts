@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final _auth = Provider.of(context).auth;
                           String uid = await _auth.signinWithGoogle();
                           print("Google User Logged in: $uid");
-                          _toggleLoading();
+                          // _toggleLoading();
                         },
                       ),
                     ),
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           final _auth = Provider.of(context).auth;
                           String uid = await _auth.signinWithFacebook();
                           print("Facebook user Loggedin $uid");
-                          _toggleLoading();
+                          // _toggleLoading();
                         },
                       ),
                     ),

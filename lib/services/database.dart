@@ -61,7 +61,6 @@ class DatabaseService {
     var docs = await userCollection.document(uid).get();
     print('Name: ${docs.data['name']}');
     var usr = docs.data;
-
     UserModel currentUser = UserModel(
       dept: usr['dept'],
       dob: usr['dob'].toDate(),
@@ -73,6 +72,20 @@ class DatabaseService {
       uid: usr['uid'],
     );
     return currentUser;
+  }
+
+  Future<bool> checkUserInDatabase() async {
+    bool isAvailable;
+    await userCollection
+        .where('uid', isEqualTo: uid)
+        .getDocuments()
+        .then((value) => {
+              if (value.documents == null || value.documents.isEmpty)
+                {isAvailable = false}
+              else
+                {isAvailable = true}
+            });
+    return isAvailable;
   }
 
   Future<String> uploadImage(File image) async {

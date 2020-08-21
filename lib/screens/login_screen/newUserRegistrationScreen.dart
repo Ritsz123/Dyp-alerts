@@ -5,35 +5,40 @@ import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
 import 'package:dypalerts/commonWidgets/background.dart';
 import 'package:dypalerts/commonWidgets/input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
-
 import 'package:loading_overlay/loading_overlay.dart';
 
 class NewUserRegScreen extends StatefulWidget {
+  final bool showPopUp;
+  NewUserRegScreen({this.showPopUp});
   @override
   _NewUserRegScreenState createState() => _NewUserRegScreenState();
 }
 
 class _NewUserRegScreenState extends State<NewUserRegScreen> {
+  Widget formSpace = SizedBox(height: 10);
+  bool isLoading = false;
+  var txtController = TextEditingController();
   UserModel user;
+
   final AuthProvider _authProvider = AuthProvider();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String _name;
-  String _email;
-  String _phone;
-  String _studyYear;
-  String _dept;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   DateTime _dateOfBirth;
-  PickedFile _imageFile;
-  String _profileUrl;
+  String _dept;
+  String _email;
 
-  Widget formSpace = SizedBox(height: 10);
+  PickedFile _imageFile;
+  String _name;
+  String _phone;
+  String _profileUrl;
+  String _studyYear;
 
   Future<UserModel> createUser() async {
     String userID = await _authProvider.getCurrentUserID();
@@ -48,6 +53,17 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
       uid: userID,
     );
     return user;
+  }
+
+  void showSnackBar() {
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 2),
+        content: Text(
+          'Continue where you left off',
+        ),
+      ),
+    );
   }
 
   Future getImage() async {
@@ -131,6 +147,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
 
   Widget _buildInputEmail() {
     return AnimTFF(
+      controller: txtController,
       validator: (value) {
         return null;
       },
@@ -138,9 +155,18 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
       onSave: (value) {
         _email = value;
       },
-      initialValue: _email,
       enabled: false,
     );
+  }
+
+  //for getting initial email value
+  void getEmail() {
+    checkEmail().then((value) => txtController.text = value);
+  }
+
+  Future<String> checkEmail() async {
+    FirebaseUser user = await AuthProvider().getCurrentUser();
+    return user.email;
   }
 
   Widget _buildStudyYear() {
@@ -234,83 +260,95 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _email = 'r989898k@gmail.com';
+  Future<bool> _onBackPressed() async {
+    return false;
+    //returning false will prevent backpress operation
   }
 
-  bool isLoading = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getEmail();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('DYPALERTS'),
-        centerTitle: true,
-      ),
-      body: LoadingOverlay(
-        isLoading: isLoading,
-        child: Stack(
-          children: [
-            BackgroundContainer(),
-            SingleChildScrollView(
-              child: Card(
-                child: Padding(
-                  padding: EdgeInsets.all(25),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        _buildProfilePic(),
-                        formSpace,
-                        _buildInputName(),
-                        formSpace,
-                        _buildInputPhone(),
-                        formSpace,
-                        _buildInputEmail(),
-                        formSpace,
-                        _buildBirthDateField(),
-                        formSpace,
-                        _buildStudyYear(),
-                        formSpace,
-                        _buildDept(),
-                      ],
+    // if (widget.showPopUp != null && widget.showPopUp) {
+    //   showSnackBar();
+    // }
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text('DYPALERTS'),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+        ),
+        body: LoadingOverlay(
+          isLoading: isLoading,
+          child: Stack(
+            children: [
+              BackgroundContainer(),
+              SingleChildScrollView(
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(25),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          _buildProfilePic(),
+                          formSpace,
+                          _buildInputName(),
+                          formSpace,
+                          _buildInputPhone(),
+                          formSpace,
+                          _buildInputEmail(),
+                          formSpace,
+                          _buildBirthDateField(),
+                          formSpace,
+                          _buildStudyYear(),
+                          formSpace,
+                          _buildDept(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.arrow_forward_ios),
-        onPressed: () async {
-          if (!_formKey.currentState.validate()) {
-            return;
-          }
-          _formKey.currentState.save();
-          setState(() {
-            isLoading = true;
-          });
-          user = await createUser(); //locally create user
-          final DatabaseService _dbService = DatabaseService(uid: user.uid);
-          if (_imageFile != null) {
-            String imageUrl =
-                await _dbService.uploadImage(File(_imageFile.path));
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_forward_ios),
+          onPressed: () async {
+            if (!_formKey.currentState.validate()) {
+              return;
+            }
+            _formKey.currentState.save();
             setState(() {
-              _profileUrl = imageUrl;
-              user.profileUrl = _profileUrl; //setting user profile url
+              isLoading = true;
             });
-          }
-          await _dbService.updateUserDataInDatabase(user); //put user data
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewHomeScreen(),
-            ),
-          );
-        },
+            user = await createUser(); //locally create user
+            final DatabaseService _dbService = DatabaseService(uid: user.uid);
+            if (_imageFile != null) {
+              String imageUrl =
+                  await _dbService.uploadImage(File(_imageFile.path));
+              setState(() {
+                _profileUrl = imageUrl;
+                user.profileUrl = _profileUrl; //setting user profile url
+              });
+            }
+            await _dbService.updateUserDataInDatabase(user); //put user data
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewHomeScreen(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

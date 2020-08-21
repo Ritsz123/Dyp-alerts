@@ -4,31 +4,32 @@ import 'package:flutter/material.dart';
 enum InputStatus { valid, invalid, none }
 
 class AnimTFF extends StatefulWidget {
-  const AnimTFF({
-    Key key,
-    this.validator,
-    this.successIcon = const Icon(
-      Icons.check,
-      color: Colors.white,
-    ),
-    this.keyboardType,
-    this.errorIcon = const Icon(
-      Icons.warning,
-      color: Colors.white,
-    ),
-    this.onSave,
-    @required this.inputIcon,
-    this.labelText,
-    this.successText,
-    this.suffix = true,
-    this.errorColor = Colors.red,
-    this.successColor = Colors.green,
-    this.backgroundColor = Colors.white,
-    this.labelColor = Colors.grey,
-    this.maxLength,
-    this.initialValue,
-    this.enabled = true,
-  }) : super(key: key);
+  const AnimTFF(
+      {Key key,
+      this.validator,
+      this.successIcon = const Icon(
+        Icons.check,
+        color: Colors.white,
+      ),
+      this.keyboardType,
+      this.errorIcon = const Icon(
+        Icons.warning,
+        color: Colors.white,
+      ),
+      this.onSave,
+      @required this.inputIcon,
+      this.labelText,
+      this.successText,
+      this.suffix = true,
+      this.errorColor = Colors.red,
+      this.successColor = Colors.green,
+      this.backgroundColor = Colors.white,
+      this.labelColor = Colors.grey,
+      this.maxLength,
+      this.initialValue,
+      this.enabled = true,
+      this.controller})
+      : super(key: key);
 
   final Color backgroundColor;
   final bool enabled;
@@ -46,6 +47,7 @@ class AnimTFF extends StatefulWidget {
   final bool suffix;
   final FormFieldValidator<String> validator;
   final int maxLength;
+  final TextEditingController controller;
 
   @override
   _AnimTFFState createState() => _AnimTFFState();
@@ -175,6 +177,7 @@ class _AnimTFFState extends State<AnimTFF> {
             if (!widget.suffix) getInputIcon(),
             Expanded(
               child: CTextFormField(
+                controller: widget.controller,
                 focusNode: focusNode,
                 decoration: InputDecoration(
                     border: InputBorder.none,

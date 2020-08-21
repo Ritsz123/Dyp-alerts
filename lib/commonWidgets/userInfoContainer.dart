@@ -1,4 +1,5 @@
 import 'package:dypalerts/model/userModel.dart';
+import 'package:dypalerts/services/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -22,9 +23,6 @@ class UserInfoContainer extends StatelessWidget {
                   : AssetImage("assets/images/profile_default.png"),
             ),
           ),
-          // SizedBox(
-          //   width: 15,
-          // ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -39,17 +37,14 @@ class UserInfoContainer extends StatelessWidget {
             ],
           ),
           IconButton(
-              icon: Icon(FontAwesomeIcons.powerOff),
-              iconSize: 25,
-              onPressed: () {
-                //do me
-              })
+            icon: Icon(FontAwesomeIcons.powerOff),
+            iconSize: 25,
+            onPressed: () {
+              Provider.of(context).auth.signout();
+            },
+          )
         ],
       ),
     );
   }
 }
-
-// Widget userInfo = UserInfoContainer(
-//   user: ,
-// );

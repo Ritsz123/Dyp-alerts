@@ -67,12 +67,14 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                   iconData: FontAwesomeIcons.clipboard,
                                   onTap: () {
                                     Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type: PageTransitionType.fade,
-                                            child: NoticeBoardScreen(
-                                              currentUser: currentUser,
-                                            )));
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.fade,
+                                        child: NoticeBoardScreen(
+                                          currentUser: currentUser,
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                                 DashCard(
@@ -131,27 +133,38 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
 
   void checkNewUser() async {
     FirebaseUser user = await AuthProvider().getCurrentUser();
+    bool isDataPresentInDB = await dbService.checkUserInDatabase();
     if (user.metadata.creationTime.year == DateTime.now().year &&
         user.metadata.creationTime.month == DateTime.now().month &&
         user.metadata.creationTime.day == DateTime.now().day &&
         user.metadata.creationTime.hour == DateTime.now().hour &&
         user.metadata.creationTime.minute == DateTime.now().minute) {
       print("New user created");
-      Navigator.pushReplacement(
-        //TODO: check for some problem
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => NewUserRegScreen()),
+        MaterialPageRoute(
+          builder: (context) => NewUserRegScreen(),
+        ),
       );
-      // setState(() {
-      //   isLoading = false;
-      // });
     } else {
-      print("Existing User");
-      UserModel usrdata = await dbService.getUserDataFromDatabase();
-      setState(() {
-        currentUser = usrdata;
-        isLoading = false;
-      });
+      if (!isDataPresentInDB) {
+        print("Existing user: no data in Database");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewUserRegScreen(
+              showPopUp: true,
+            ),
+          ),
+        );
+      } else {
+        print("Existing User: Data present in Database");
+        UserModel usrdata = await dbService.getUserDataFromDatabase();
+        setState(() {
+          currentUser = usrdata;
+          isLoading = false;
+        });
+      }
     }
   }
 }

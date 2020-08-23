@@ -24,9 +24,6 @@ class NoticeBoardScreen extends StatelessWidget {
                   Expanded(
                     child: NoticeList(),
                   ),
-                  // Expanded(
-                  //   child:
-                  // ),
                 ],
               ),
             ),

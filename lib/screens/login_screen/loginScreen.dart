@@ -24,130 +24,127 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: LoadingOverlay(
-          progressIndicator: SpinKitDualRing(
-            color: Colors.white,
-          ),
-          isLoading: _isLoading,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: screenHeight(context: context, divideBy: 1.5),
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth(context: context, divideBy: 10)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipOval(
-                      child: Image(
-                        image: AssetImage('assets/images/logo.png'),
-                      ),
+      body: LoadingOverlay(
+        progressIndicator: SpinKitDualRing(
+          color: Colors.white,
+        ),
+        isLoading: _isLoading,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              height: screenHeight(context: context, divideBy: 1.5),
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth(context: context, divideBy: 10)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: Image(
+                      image: AssetImage('assets/images/logo.png'),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'DYP Alerts',
-                      style: TextStyle(
-                        fontSize: screenHeight(context: context, divideBy: 20),
-                      ),
-                    )
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.orange[400],
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(
-                        screenHeight(context: context, divideBy: 2.5)),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'DYP Alerts',
+                    style: TextStyle(
+                      fontSize: screenHeight(context: context, divideBy: 20),
+                    ),
+                  )
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: Colors.orange[400],
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(
+                      screenHeight(context: context, divideBy: 2.5)),
                 ),
               ),
-              SizedBox(
-                height: screenHeight(context: context, divideBy: 16),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth(context: context, divideBy: 10)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      child: RaisedButton(
-                        color: Colors.white,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                'assets/images/google_logo1.png',
-                              ),
-                              height: 40,
+            ),
+            SizedBox(
+              height: screenHeight(context: context, divideBy: 16),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth(context: context, divideBy: 10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: RaisedButton(
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image(
+                            image: AssetImage(
+                              'assets/images/google_logo1.png',
                             ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              'Sign in with Google',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
-                        onPressed: () async {
-                          _toggleLoading();
-                          final _auth = Provider.of(context).auth;
-                          String uid = await _auth.signinWithGoogle();
-                          print("Google User Logged in: $uid");
-                          // _toggleLoading();
-                        },
+                            height: 40,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            'Sign in with Google',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
                       ),
+                      onPressed: () async {
+                        _toggleLoading();
+                        final _auth = Provider.of(context).auth;
+                        String uid = await _auth.signinWithGoogle();
+                        print("Google User Logged in: $uid");
+                        // _toggleLoading();
+                      },
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: RaisedButton(
-                        color: Color(0xff314C7B),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                'assets/images/facebook_logo.png',
-                              ),
-                              height: 40,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: RaisedButton(
+                      color: Color(0xff314C7B),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image(
+                            image: AssetImage(
+                              'assets/images/facebook_logo.png',
                             ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              'Sign in with Facebook',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        onPressed: () async {
-                          _toggleLoading();
-                          final _auth = Provider.of(context).auth;
-                          String uid = await _auth.signinWithFacebook();
-                          print("Facebook user Loggedin $uid");
-                          // _toggleLoading();
-                        },
+                            height: 40,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            'Sign in with Facebook',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                        ],
                       ),
+                      onPressed: () async {
+                        _toggleLoading();
+                        final _auth = Provider.of(context).auth;
+                        String uid = await _auth.signinWithFacebook();
+                        print("Facebook user Loggedin $uid");
+                        // _toggleLoading();
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

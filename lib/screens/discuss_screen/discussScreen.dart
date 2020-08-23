@@ -1,5 +1,6 @@
 import 'package:dypalerts/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 class DiscussScreen extends StatefulWidget {
@@ -13,14 +14,24 @@ class _DiscussScreenState extends State<DiscussScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: LoadingOverlay(
-          isLoading: true,
-          progressIndicator: loadingIndicator,
-          child: Center(
-              child: Text(
-            'Discussion Screen',
-            style: TextStyle(fontSize: 25),
-          )),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                "assets/svgs/in_progress.svg",
+                width: 250,
+                semanticsLabel: "InProgress",
+              ),
+              Text(
+                "Coming Soon..",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

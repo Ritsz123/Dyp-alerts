@@ -8,6 +8,7 @@ import 'package:dypalerts/commonWidgets/input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
@@ -68,14 +69,33 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
 
   Future getImage() async {
     final picker = ImagePicker();
-    var tempImage = await picker.getImage(
+    PickedFile tempImage = await picker.getImage(
       source: ImageSource.gallery,
-      maxWidth: 250,
-      maxHeight: 250,
+      maxWidth: 1024,
+      maxHeight: 1024,
     );
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: tempImage.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+
     if (tempImage != null) {
       setState(() {
-        _imageFile = tempImage;
+        _imageFile = PickedFile(croppedFile.path);
         print('Image URL: ${_imageFile.path}');
       });
     }

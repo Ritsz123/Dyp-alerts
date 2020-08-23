@@ -18,9 +18,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Dyp Alerts',
         theme: ThemeData.light(),
-        home: Scaffold(
-          body: MainScreen(),
-        ),
+        home: MainScreen(),
       ),
     );
   }

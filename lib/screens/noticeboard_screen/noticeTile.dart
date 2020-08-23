@@ -2,19 +2,22 @@ import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/noticeModel.dart';
 import 'package:dypalerts/screens/noticeboard_screen/SingleNoticeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class NoticeTile extends StatelessWidget {
-  NoticeTile({@required this.notice});
+  NoticeTile({@required this.notice, this.maketextbold = false});
   final NoticeModel notice;
+  final bool maketextbold;
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => SingleNoticeScreen(
-              noticeModel: notice,
+          PageTransition(
+            type: PageTransitionType.rightToLeftWithFade,
+            child: SingleNoticeScreen(
+              notice: notice,
             ),
           ),
         );
@@ -26,10 +29,12 @@ class NoticeTile extends StatelessWidget {
           Flexible(
             child: Text(
               notice.title,
-              style: kNoticeTitle,
+              style: kNoticeTitle.copyWith(
+                fontWeight: maketextbold ? FontWeight.bold : FontWeight.normal,
+              ),
               softWrap: true,
               textAlign: TextAlign.left,
-              maxLines: 2,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -54,8 +59,6 @@ class NoticeTile extends StatelessWidget {
           ),
         ],
       ),
-
-//      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
     );
   }
 }

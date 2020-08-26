@@ -1,10 +1,11 @@
 import 'package:dypalerts/model/userModel.dart';
-import 'package:dypalerts/services/provider.dart';
+import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class UserInfoContainer extends StatelessWidget {
-  UserInfoContainer({@required this.user});
+  UserInfoContainer({this.user});
   final UserModel user;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class UserInfoContainer extends StatelessWidget {
             icon: Icon(FontAwesomeIcons.powerOff),
             iconSize: 25,
             onPressed: () {
-              Provider.of(context).auth.signout();
+              Provider.of<AuthProvider>(context, listen: false).signout();
             },
           )
         ],

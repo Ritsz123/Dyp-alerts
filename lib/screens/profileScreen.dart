@@ -1,22 +1,28 @@
+import 'dart:io';
+import 'package:dypalerts/commonWidgets/customImagePicker.dart';
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/userModel.dart';
+import 'package:dypalerts/services/auth.dart';
+import 'package:dypalerts/services/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({@required this.currentUser});
-  final UserModel currentUser;
-
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isEditing = false;
+  AuthProvider _auth;
+  UserModel currentUser;
 
   @override
   Widget build(BuildContext context) {
+    currentUser = context.watch<UserModel>();
+    _auth = Provider.of<AuthProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -31,35 +37,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fit: BoxFit.cover,
                     image: AssetImage('assets/images/bg.png'),
                   ),
-//                  gradient: LinearGradient(
-//                    colors: [Color(0xfff12711), Color(0xfff5af19)],
-//                    stops: [0.0, 0.7],
-//                  ),
                 ),
                 child: Column(
                   children: [
-                    Card(
-                      child: Hero(
-                        tag: 'profilePic',
-                        child: CircleAvatar(
-                          radius: screenHeight(context: context, divideBy: 13),
-                          backgroundColor: Colors.yellowAccent,
-                          backgroundImage: widget.currentUser.profileUrl != null
-                              ? NetworkImage(widget.currentUser.profileUrl)
-                              : AssetImage('assets/images/profile_default.png'),
-                        ),
+                    GestureDetector(
+                      onTap: () async {
+                        String uid = await _auth.getCurrentUserID();
+                        File imageFile = await CustomImagePicker().pickImage();
+                        DatabaseService(uid: uid)
+                            .uploadImage(file: imageFile)
+                            .then((url) {
+                          currentUser.updateProfileUrl(newProfileUrl: url);
+                        });
+                      },
+                      child: Stack(
+                        children: [
+                          Card(
+                            child: Hero(
+                              tag: 'profilePic',
+                              child: CircleAvatar(
+                                radius: screenHeight(
+                                    context: context, divideBy: 13),
+//                                backgroundColor: Colors.yellowAccent,
+                                backgroundImage: currentUser.profileUrl != null
+                                    ? NetworkImage(currentUser.profileUrl)
+                                    : AssetImage(
+                                        'assets/images/profile_default.png'),
+                              ),
+                            ),
+                            elevation: 10,
+                            shape: CircleBorder(),
+                            clipBehavior: Clip.antiAlias,
+                          ),
+                          Positioned(
+                            bottom: 5,
+                            right: 5,
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 26,
+                            ),
+                          ),
+                        ],
                       ),
-                      elevation: 10,
-                      shape: CircleBorder(),
-                      clipBehavior: Clip.antiAlias,
                     ),
                     Text(
-                      widget.currentUser.name,
+                      currentUser.name,
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      widget.currentUser.email,
+                      currentUser.email,
                       style: TextStyle(fontSize: 18),
                     )
                   ],
@@ -82,25 +109,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     UserInfoTile(
                       title: 'Name',
-                      info: widget.currentUser.name,
+                      info: currentUser.name,
                     ),
                     UserInfoTile(
                       title: 'Mobile',
-                      info: widget.currentUser.phone,
+                      info: currentUser.phone,
                     ),
                     UserInfoTile(
                       title: 'Email',
-                      info: widget.currentUser.email,
+                      info: currentUser.email,
                     ),
                     // isEditing? :
                     UserInfoTile(
                       title: "Study Year",
-                      info: widget.currentUser.studyYear,
+                      info: currentUser.studyYear,
                     ),
                     UserInfoTile(
                       title: 'D.O.B.',
-                      info: DateFormat('dd MMM yyyy')
-                          .format(widget.currentUser.dob),
+                      info: DateFormat('dd MMM yyyy').format(currentUser.dob),
                     ),
                   ],
                 ),

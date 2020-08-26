@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
@@ -18,7 +19,7 @@ abstract class AuthBase {
   Future<FirebaseUser> getCurrentUser();
 }
 
-class AuthProvider implements AuthBase {
+class AuthProvider with ChangeNotifier implements AuthBase {
   final FacebookLogin _facebookLogin = FacebookLogin();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();

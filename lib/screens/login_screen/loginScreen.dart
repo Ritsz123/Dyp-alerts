@@ -1,9 +1,10 @@
 import 'package:dypalerts/constants/constants.dart';
-import 'package:dypalerts/services/provider.dart';
+import 'package:dypalerts/services/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static final id = 'loginScreen';
@@ -14,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
-
+  AuthProvider _auth;
   void _toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _auth = Provider.of<AuthProvider>(context);
     return Scaffold(
       body: LoadingOverlay(
         progressIndicator: SpinKitDualRing(
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () async {
                         _toggleLoading();
-                        final _auth = Provider.of(context).auth;
+
                         String uid = await _auth.signinWithGoogle();
                         print("Google User Logged in: $uid");
                         // _toggleLoading();
@@ -134,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () async {
                         _toggleLoading();
-                        final _auth = Provider.of(context).auth;
+
                         String uid = await _auth.signinWithFacebook();
                         print("Facebook user Loggedin $uid");
                         // _toggleLoading();

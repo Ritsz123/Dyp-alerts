@@ -1,3 +1,4 @@
+import 'package:dypalerts/commonWidgets/customImagePicker.dart';
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/userModel.dart';
 import 'package:dypalerts/screens/home_screen/newHomeScreen.dart';
@@ -8,9 +9,7 @@ import 'package:dypalerts/commonWidgets/input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -35,7 +34,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
   String _dept;
   String _email;
 
-  PickedFile _imageFile;
+  File _imageFile;
   String _name;
   String _phone;
   String _profileUrl;
@@ -67,43 +66,12 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
     );
   }
 
-  Future getImage() async {
-    final picker = ImagePicker();
-    PickedFile tempImage = await picker.getImage(
-      source: ImageSource.gallery,
-      maxWidth: 1024,
-      maxHeight: 1024,
-    );
-    File croppedFile = await ImageCropper.cropImage(
-        sourcePath: tempImage.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        ));
-
-    if (tempImage != null) {
-      setState(() {
-        _imageFile = PickedFile(croppedFile.path);
-        print('Image URL: ${_imageFile.path}');
-      });
-    }
-  }
-
   Widget _buildProfilePic() {
     return GestureDetector(
-      onTap: () => getImage(),
+      onTap: () async {
+        CustomImagePicker imagePicker = CustomImagePicker();
+        _imageFile = await imagePicker.pickImage();
+      },
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
@@ -353,8 +321,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
             user = await createUser(); //locally create user
             final DatabaseService _dbService = DatabaseService(uid: user.uid);
             if (_imageFile != null) {
-              String imageUrl =
-                  await _dbService.uploadImage(File(_imageFile.path));
+              String imageUrl = await _dbService.uploadImage(file: _imageFile);
               setState(() {
                 _profileUrl = imageUrl;
                 user.profileUrl = _profileUrl; //setting user profile url

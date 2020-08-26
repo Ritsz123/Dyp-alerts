@@ -91,7 +91,7 @@ class DatabaseService {
     return isAvailable;
   }
 
-  Future<String> uploadImage(File image) async {
+  Future<String> uploadImage({File file}) async {
     String imageUrl;
     final StorageReference _storageReference = FirebaseStorage()
         .ref()
@@ -100,7 +100,7 @@ class DatabaseService {
         .child(uid); //the name of file;
     print('uploading....');
     StorageTaskSnapshot snapshot =
-        await _storageReference.putFile(image).onComplete;
+        await _storageReference.putFile(file).onComplete;
     if (snapshot.error == null) {
       imageUrl = await snapshot.ref.getDownloadURL();
     } else {

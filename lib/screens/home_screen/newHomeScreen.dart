@@ -7,7 +7,6 @@ import 'package:dypalerts/screens/noticeboard_screen/noticeboardScreen.dart';
 import 'package:dypalerts/screens/profileScreen.dart';
 import 'package:dypalerts/services/auth.dart';
 import 'package:dypalerts/services/database.dart';
-import 'package:dypalerts/services/provider.dart';
 import 'package:dypalerts/commonWidgets/background.dart';
 import 'package:dypalerts/commonWidgets/userInfoContainer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class NewHomeScreen extends StatefulWidget {
   @override
@@ -25,9 +25,9 @@ class NewHomeScreen extends StatefulWidget {
 class _NewHomeScreenState extends State<NewHomeScreen> {
   bool isLoading = true;
   final DatabaseService dbService = DatabaseService();
-  UserModel currentUser; //actual data of user from database
-
-//Dummy data
+  UserModel currentUser;
+  AuthProvider auth;
+  //actual data of user from database
 
   @override
   void initState() {
@@ -37,7 +37,8 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of(context).auth;
+    auth = context.watch<AuthProvider>();
+    currentUser = context.watch<UserModel>();
     return LoadingOverlay(
       isLoading: isLoading,
       child: isLoading
@@ -103,9 +104,7 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) => ProfileScreen(
-                                          currentUser: currentUser,
-                                        ),
+                                        builder: (context) => ProfileScreen(),
                                       ),
                                     );
                                   },
@@ -160,8 +159,8 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
       } else {
         print("Existing User: Data present in Database");
         UserModel usrdata = await dbService.getUserDataFromDatabase();
+        currentUser.updateUser(user: usrdata);
         setState(() {
-          currentUser = usrdata;
           isLoading = false;
         });
       }

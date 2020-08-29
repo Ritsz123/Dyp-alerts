@@ -1,14 +1,59 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:dypalerts/model/noticeModel.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeTile.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dypalerts/commonWidgets/pdfScreen.dart';
 
-class SingleNoticeScreen extends StatelessWidget {
+class SingleNoticeScreen extends StatefulWidget {
   SingleNoticeScreen({@required this.notice});
   final NoticeModel notice;
+
+  @override
+  _SingleNoticeScreenState createState() => _SingleNoticeScreenState();
+}
+
+class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
+  String pdfPath = "";
+  bool exists = true;
+  int _totalPages = 0;
+  int _currentPage = 0;
+  bool pdfReady = false;
+  PDFViewController _pdfViewController;
+  bool loaded = false;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.notice.hasAttachment) {
+      createFileOfPDFUrl(widget.notice.pdfUrl).then((f) => {
+            setState(() {
+              pdfPath = f.path;
+              print("PDF: $pdfPath");
+            })
+          });
+    }
+  }
+
+  Future<File> createFileOfPDFUrl(String pdfUrl) async {
+    final filename = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    File file = new File('$dir/$filename');
+    if (!file.existsSync()) {
+      var request = await HttpClient().getUrl(Uri.parse(pdfUrl));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      await file.writeAsBytes(bytes);
+    }
+    return file;
+  }
+
   @override
   Widget build(BuildContext context) {
-    NoticeModel currentNotice = notice;
+    NoticeModel currentNotice = widget.notice;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -51,7 +96,13 @@ class SingleNoticeScreen extends StatelessWidget {
                       ? RaisedButton(
                           elevation: 5,
                           onPressed: () {
-                            print('open file');
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PDFScreen(
+                                    path: pdfPath,
+                                  );
+                                });
                           },
                           child: Text('Open Attachment'),
                         )

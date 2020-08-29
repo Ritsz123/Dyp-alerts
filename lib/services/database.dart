@@ -18,18 +18,28 @@ class DatabaseService {
 
   List<NoticeModel> getNoticeList(AsyncSnapshot snapshot) {
     List<NoticeModel> noticeList = [];
-    String title, author, timeAddedHours, timeAddedDate, description;
+    String title,
+        author,
+        timeAddedHours,
+        timeAddedDate,
+        description,
+        pdfUrl = "";
     bool hasAttachment;
-    for (var snap in snapshot.data.documents) {
-      title = snap['title'];
-      author = snap['author'];
-      description = snap['desc'];
-      hasAttachment = snap['isAttachment'];
-      DateTime date = DateTime.parse(snap['timeAdded'].toDate().toString());
+    for (DocumentSnapshot snap in snapshot.data.documents) {
+      var data = snap.data;
+
+      title = data['title'];
+      author = data['author'];
+      description = data['desc'];
+      hasAttachment = data['isAttachment'];
+      hasAttachment ? pdfUrl = data['pdfUrl'] : pdfUrl = "";
+      DateTime date = DateTime.parse(data['timeAdded'].toDate().toString());
       timeAddedHours = DateFormat('hh:mm a,').format(date);
       timeAddedDate = DateFormat('dd MMM yyyy').format(date);
-      noticeList.add(NoticeModel(
+
+      NoticeModel notice = NoticeModel(
         description: description,
+        pdfUrl: pdfUrl,
         author: author,
         hasAttachment: hasAttachment,
         title: title,
@@ -37,7 +47,9 @@ class DatabaseService {
           MapEntry('hrs', timeAddedHours),
           MapEntry('date', timeAddedDate)
         ], //timeAdded,
-      ));
+      );
+
+      noticeList.add(notice);
     }
     return noticeList;
   }

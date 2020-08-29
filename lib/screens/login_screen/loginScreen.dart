@@ -101,7 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () async {
                         _toggleLoading();
-
                         String uid = await _auth.signinWithGoogle();
                         print("Google User Logged in: $uid");
                         // _toggleLoading();
@@ -136,7 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () async {
                         _toggleLoading();
-
                         String uid = await _auth.signinWithFacebook();
                         print("Facebook user Loggedin $uid");
                         // _toggleLoading();

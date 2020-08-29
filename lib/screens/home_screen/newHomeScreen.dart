@@ -131,14 +131,14 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   }
 
   void checkNewUser() async {
-    FirebaseUser user = await AuthProvider().getCurrentUser();
+    FirebaseUser user = await context.read<AuthProvider>().getCurrentUser();
     bool isDataPresentInDB = await dbService.checkUserInDatabase();
-    if (user.metadata.creationTime.year == DateTime.now().year &&
-        user.metadata.creationTime.month == DateTime.now().month &&
-        user.metadata.creationTime.day == DateTime.now().day &&
-        user.metadata.creationTime.hour == DateTime.now().hour &&
-        user.metadata.creationTime.minute == DateTime.now().minute) {
-      print("New user created");
+    if ((user.metadata.creationTime.year == DateTime.now().year &&
+            user.metadata.creationTime.month == DateTime.now().month &&
+            user.metadata.creationTime.day == DateTime.now().day &&
+            user.metadata.creationTime.hour == DateTime.now().hour &&
+            user.metadata.creationTime.minute == DateTime.now().minute) ||
+        !isDataPresentInDB) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -146,24 +146,12 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
         ),
       );
     } else {
-      if (!isDataPresentInDB) {
-        print("Existing user: no data in Database");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewUserRegScreen(
-              showPopUp: true,
-            ),
-          ),
-        );
-      } else {
-        print("Existing User: Data present in Database");
-        UserModel usrdata = await dbService.getUserDataFromDatabase();
-        currentUser.updateUser(user: usrdata);
-        setState(() {
-          isLoading = false;
-        });
-      }
+      print("Existing User:");
+      UserModel usrdata = await dbService.getUserDataFromDatabase();
+      currentUser.updateUser(user: usrdata);
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

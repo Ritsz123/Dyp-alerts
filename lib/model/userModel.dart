@@ -1,3 +1,4 @@
+import 'package:dypalerts/services/database.dart';
 import 'package:flutter/widgets.dart';
 
 class UserModel with ChangeNotifier {
@@ -30,12 +31,12 @@ class UserModel with ChangeNotifier {
     this.profileUrl = user.profileUrl;
     this.studyYear = user.studyYear;
     this.uid = user.uid;
-    print("update current user");
     notifyListeners();
   }
 
-  updateProfileUrl({String newProfileUrl}) {
+  updateProfileUrl({String newProfileUrl}) async {
     this.profileUrl = newProfileUrl;
+    await DatabaseService(uid: uid).updateProfileUrl(url: newProfileUrl);
     notifyListeners();
   }
 }

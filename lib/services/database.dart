@@ -91,6 +91,15 @@ class DatabaseService {
     return isAvailable;
   }
 
+  Future<bool> updateProfileUrl({String url}) async {
+    await userCollection
+        .document(uid)
+        .updateData({'profileUrl': url}).then((value) {
+      return true;
+    });
+    return false;
+  }
+
   Future<String> uploadImage({File file}) async {
     String imageUrl;
     final StorageReference _storageReference = FirebaseStorage()

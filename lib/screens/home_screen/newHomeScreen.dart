@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/userModel.dart';
 import 'package:dypalerts/screens/discuss_screen/discussScreen.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:open_file/open_file.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +35,14 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
   void initState() {
     super.initState();
     checkNewUser(); //to check & decide whether to display datainput screen
+  }
+
+  openSyllabusDoc() async {
+    String dept = currentUser.getDept();
+    String year = currentUser.getYear();
+    String syllabusUrl = await dbService.getSyllabusUrl(dept: dept, year: year);
+    File file = await createFileOfPDFUrl(syllabusUrl);
+    OpenFile.open(file.path);
   }
 
   @override
@@ -81,8 +91,9 @@ class _NewHomeScreenState extends State<NewHomeScreen> {
                                 DashCard(
                                   label: 'Syllabus',
                                   iconData: FontAwesomeIcons.newspaper,
-                                  onTap: () {
+                                  onTap: () async {
                                     //TODO:add functionality for syllabus
+                                    openSyllabusDoc();
                                   },
                                 ),
                                 DashCard(

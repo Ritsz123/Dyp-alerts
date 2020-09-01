@@ -50,9 +50,10 @@ dependencies:
   image_cropper: ^1.3.0
   # svg
   flutter_svg: ^0.18.0
-  # pdf viewer
-  flutter_pdfview: ^1.0.0+10
+  #provide hidden app data path
   path_provider: ^1.6.14
+  #to open pdf in user's default viewer
+  open_file: ^3.0.1
 
 dev_dependencies:
   flutter_test:

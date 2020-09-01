@@ -1,13 +1,10 @@
-import 'dart:async';
-import 'dart:io';
+import 'package:dypalerts/constants/constants.dart';
 import 'package:dypalerts/model/noticeModel.dart';
 import 'package:dypalerts/screens/noticeboard_screen/noticeTile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:dypalerts/commonWidgets/pdfScreen.dart';
+import 'package:open_file/open_file.dart';
 
 class SingleNoticeScreen extends StatefulWidget {
   SingleNoticeScreen({@required this.notice});
@@ -20,11 +17,6 @@ class SingleNoticeScreen extends StatefulWidget {
 class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
   String pdfPath = "";
   bool exists = true;
-  int _totalPages = 0;
-  int _currentPage = 0;
-  bool pdfReady = false;
-  PDFViewController _pdfViewController;
-  bool loaded = false;
   @override
   void initState() {
     super.initState();
@@ -36,19 +28,6 @@ class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
             })
           });
     }
-  }
-
-  Future<File> createFileOfPDFUrl(String pdfUrl) async {
-    final filename = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = new File('$dir/$filename');
-    if (!file.existsSync()) {
-      var request = await HttpClient().getUrl(Uri.parse(pdfUrl));
-      var response = await request.close();
-      var bytes = await consolidateHttpClientResponseBytes(response);
-      await file.writeAsBytes(bytes);
-    }
-    return file;
   }
 
   @override
@@ -96,13 +75,7 @@ class _SingleNoticeScreenState extends State<SingleNoticeScreen> {
                       ? RaisedButton(
                           elevation: 5,
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return PDFScreen(
-                                    path: pdfPath,
-                                  );
-                                });
+                            OpenFile.open(pdfPath);
                           },
                           child: Text('Open Attachment'),
                         )

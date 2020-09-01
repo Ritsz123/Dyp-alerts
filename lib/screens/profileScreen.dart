@@ -49,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             .then((url) {
                           currentUser.updateProfileUrl(newProfileUrl: url);
                         });
+                        setState(() {});
                       },
                       child: Stack(
                         children: [
@@ -58,7 +59,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircleAvatar(
                                 radius: screenHeight(
                                     context: context, divideBy: 13),
-//                                backgroundColor: Colors.yellowAccent,
                                 backgroundImage: currentUser.profileUrl != null
                                     ? NetworkImage(currentUser.profileUrl)
                                     : AssetImage(
@@ -119,7 +119,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       title: 'Email',
                       info: currentUser.email,
                     ),
-                    // isEditing? :
                     UserInfoTile(
                       title: "Study Year",
                       info: currentUser.studyYear,
@@ -146,12 +145,10 @@ class UserInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-//      padding: EdgeInsets.all(0),
       title: Text(
         title,
         style: kProfileDescTitle,
       ),
-
       subtitle: Text(
         info,
         style: kProfileDescInfo,

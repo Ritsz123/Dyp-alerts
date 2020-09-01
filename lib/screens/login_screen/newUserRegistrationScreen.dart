@@ -71,6 +71,7 @@ class _NewUserRegScreenState extends State<NewUserRegScreen> {
       onTap: () async {
         CustomImagePicker imagePicker = CustomImagePicker();
         _imageFile = await imagePicker.pickImage();
+        setState(() {});
       },
       child: Stack(
         alignment: Alignment.bottomCenter,

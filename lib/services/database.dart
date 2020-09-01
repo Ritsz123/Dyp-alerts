@@ -15,6 +15,8 @@ class DatabaseService {
       Firestore.instance.collection('users');
   final CollectionReference noticeCollection =
       Firestore.instance.collection('notices');
+  final CollectionReference syllabusCollection =
+      Firestore.instance.collection('syllabus');
 
   List<NoticeModel> getNoticeList(AsyncSnapshot snapshot) {
     List<NoticeModel> noticeList = [];
@@ -110,6 +112,11 @@ class DatabaseService {
       return true;
     });
     return false;
+  }
+
+  Future<String> getSyllabusUrl({String dept, String year}) async {
+    var snap = await syllabusCollection.document(dept).get();
+    return snap.data[year];
   }
 
   Future<String> uploadImage({File file}) async {

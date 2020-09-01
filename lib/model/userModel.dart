@@ -39,4 +39,12 @@ class UserModel with ChangeNotifier {
     await DatabaseService(uid: uid).updateProfileUrl(url: newProfileUrl);
     notifyListeners();
   }
+
+  String getDept() {
+    return this.dept;
+  }
+
+  String getYear() {
+    return this.studyYear;
+  }
 }
